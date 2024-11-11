@@ -1,0 +1,13 @@
+name = "NMRScreen"
+uuid = "e6af4f88-7701-4df4-8af7-4e9c6957a0a0"
+authors = ["chriswaudby <cwaudby@gmail.com> and contributors"]
+version = "0.0.1"
+
+[compat]
+julia = "1.11"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
