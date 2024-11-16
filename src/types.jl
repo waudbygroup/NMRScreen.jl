@@ -72,11 +72,9 @@ struct RelaxationResult
     R2_error
     I0
     I0_error
-    t
-    y
-    ye
-    tpred
-    ypred
+    ty
+    tye
+    typred
 end
 
 """

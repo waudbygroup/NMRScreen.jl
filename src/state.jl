@@ -60,19 +60,17 @@ function addguistuff!(state)
     end
 
     # plotting data
-    state["reference_plot_x"] = lift(state["reference_spec"]) do spec
-        data(spec, F1Dim)
+    state["reference_plot"] = lift(state["reference_spec"]) do spec
+        x = data(spec, F1Dim)
+        y = data(spec[:,1]) / scale(spec)
+        [Point2f(p...) for p in zip(x, y)]
     end
-    state["reference_plot_y"] = lift(state["reference_spec"]) do spec
-        data(spec[:,1]) / scale(spec)
+    state["bound_plot"] = lift(state["bound_spec"]) do spec
+        x = data(spec, F1Dim)
+        y = data(spec[:,1]) / scale(spec)
+        [Point2f(p...) for p in zip(x, y)]
     end
-    state["bound_plot_x"] = lift(state["bound_spec"]) do spec
-        data(spec, F1Dim)
-    end
-    state["bound_plot_y"] = lift(state["bound_spec"]) do spec
-        data(spec[:,1]) / scale(spec)
-    end
-
+    
     state["heatmap_menu"] = Observable("DeltaR2")
     state["heatmap_data"] = Observable(randn(state["max_peaks"], state["n_cocktails"]))
     state["heatmap_label"] = Observable("ΔR₂ (s⁻¹)")

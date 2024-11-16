@@ -38,8 +38,8 @@ function gui(state)
     hideydecorations!(bound_spectra_plot)
     linkaxes!(ref_spectra_plot, bound_spectra_plot)
 
-    lines!(ref_spectra_plot, state["reference_plot_x"], state["reference_plot_y"], label = "Reference")
-    lines!(bound_spectra_plot, state["bound_plot_x"], state["bound_plot_y"], label = "Bound")
+    lines!(ref_spectra_plot, state["reference_plot"], label = "Reference")
+    lines!(bound_spectra_plot, state["bound_plot"], label = "Bound")
 
     vlines!(ref_spectra_plot, state["library_shifts"], color=:orange, ymin=0.8)
     
@@ -48,12 +48,14 @@ function gui(state)
     scatter!(ref_spectra_plot, state["current_ref_x"], state["current_ref_y"], color = :red, markersize=10)
     scatter!(bound_spectra_plot, state["current_bound_x"], state["current_bound_y"], color = :red, markersize=10)
 
-    on(slider_peaks.value) do n
+    # on(slider_peaks.value) do n
+    on(state["current_peak"]) do p
         xl1, xl2 = ref_spectra_plot.xaxis.attributes.limits[]
         mn,mx = extrema(data(state["reference_spec"][],F1Dim))
         sw = mx - mn
         xw = xl2 - xl1
-        x = state["ref_points"][][n][1]
+        # x = state["ref_points"][][n][1]
+        x = p.reference_shift
         nx1 = x - xw / 2
         nx2 = x + xw / 2
         if sw > xw # zoomed in
@@ -86,29 +88,12 @@ function gui(state)
         xlabel="Relaxation time (ms)",
         ylabel="Intensity",
         limits=(nothing, (-.1, 1.1)))
-        # limits=(nothing, (0, nothing))) # TODO don't fix this to zero if there are negative values
-    errorbars!(relaxation_plot,
-        @lift(1000*$(state["reference_relaxation"]).t),
-        @lift($(state["reference_relaxation"]).y),
-        @lift($(state["reference_relaxation"]).ye))
-    errorbars!(relaxation_plot,
-        @lift(1000*$(state["bound_relaxation"]).t),
-        @lift($(state["bound_relaxation"]).y),
-        @lift($(state["bound_relaxation"]).ye))
-    scatter!(relaxation_plot,
-        @lift(1000*$(state["reference_relaxation"]).t),
-        @lift($(state["reference_relaxation"]).y),
-        label = "Reference")
-    scatter!(relaxation_plot,
-        @lift(1000*$(state["bound_relaxation"]).t),
-        @lift($(state["bound_relaxation"]).y),
-        label = "Bound")
-    lines!(relaxation_plot,
-        @lift(1000*$(state["reference_relaxation"]).tpred),
-        @lift($(state["reference_relaxation"]).ypred))
-    lines!(relaxation_plot,
-        @lift(1000*$(state["bound_relaxation"]).tpred),
-        @lift($(state["bound_relaxation"]).ypred))
+    errorbars!(relaxation_plot, @lift($(state["reference_relaxation"]).tye))
+    errorbars!(relaxation_plot, @lift($(state["bound_relaxation"]).tye))
+    scatter!(relaxation_plot, @lift($(state["reference_relaxation"]).ty), label = "Reference")
+    scatter!(relaxation_plot, @lift($(state["bound_relaxation"]).ty), label = "Bound")
+    lines!(relaxation_plot, @lift($(state["reference_relaxation"]).typred))
+    lines!(relaxation_plot, @lift($(state["bound_relaxation"]).typred))
     axislegend(relaxation_plot)
     
 
@@ -153,14 +138,15 @@ function gui(state)
     # Event handler for heatmap click
     on(events(ax_heatmap).mousebutton) do event
         if event.button == Mouse.left && event.action == Mouse.release
-            i = pick(ax_heatmap)[2]
+            plt, i = pick(fig)
+            plt == hm || return
             i > 0 || return
             idx = CartesianIndices(state["heatmap_data"][])[i]
             peak_idx = idx[1]
             cocktail_idx = idx[2]
             if peak_idx <= length(state["cocktails"][cocktail_idx].peaks)
-                slider_cocktails.value[] = cocktail_idx
-                slider_peaks.value[] = peak_idx
+                set_close_to!(slider_cocktails, cocktail_idx)
+                set_close_to!(slider_peaks, peak_idx)
                 # state["current_cocktail_number"][] = cocktail_idx
                 # state["current_peak_number"][] = peak_idx
             end

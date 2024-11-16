@@ -23,8 +23,14 @@ function fitrelaxation(spec)
     ypred = ypred / I0
     y = y / I0
     yerr = yerr / I0
+
+    # wrap up into types to prevent observable sync errors
+    # and convert times into milliseconds
+    ty = [Point2f(1000*t[i], y[i]) for i in 1:length(t)]
+    tye = [(1000*t[i], y[i], yerr[i]) for i in 1:length(t)]
+    typred = [Point2f(1000*tpred[i], ypred[i]) for i in 1:length(tpred)]
     
-    RelaxationResult(R2, R2err, I0, I0err, t, y, yerr, tpred, ypred)
+    RelaxationResult(R2, R2err, I0, I0err, ty, tye, typred)
 end
 
 Base.show(io::IO, result::RelaxationResult) = print(io, "R2: ", result.R2 ± result.R2_error, " s-1")

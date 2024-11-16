@@ -49,6 +49,8 @@ function screen(experiment_toml::String)
     # Display and return figure for interactive use
     display(fig)
     return fig, state
+    # wait(display(figure)) # wait to execute the following code until the window is closed
+    # GLMakie.closeall()
 end
 
 """
