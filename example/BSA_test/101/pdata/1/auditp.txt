@@ -1,0 +1,69 @@
+##TITLE= Audit trail, TopSpin 4.4.0
+##JCAMPDX= 5.01
+##ORIGIN= Bruker BioSpin GmbH & Co. KG
+##OWNER= nmrsu
+$$ /opt/nmrdata-manual/data/admins/nmr/nikita_19Ffragment_C1_BSA_241111/12/pdata/1/auditp.txt
+##AUDIT TRAIL=  $$ (NUMBER, WHEN, WHO, WHERE, PROCESS, VERSION, WHAT)
+(   1,<2024-11-11T16:34:52.605+0000>,<nmrsu>,<localhost>,<go4>,<TopSpin 4.4.0>,
+      <acquisition in progress>)
+(   2,<2024-11-11T16:42:16.541+0000>,<nmrsu>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       data hash MD5: 512K * 16
+       C9 72 A0 2C E0 21 57 41 8C 4B F1 77 80 C4 9A 3A>)
+(   3,<2024-11-11T16:43:09.777+0000>,<nmrsu>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       data hash MD5: 512K * 16
+       FC D1 0E 85 92 F2 D7 5C 37 0F 17 FE 7E 4F 81 CF>)
+(   4,<2024-11-11T17:00:30.278+0000>,<nmrsu>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       data hash MD5: 512K * 16
+       95 36 FB 29 BB 69 27 8B 85 95 A3 F5 31 75 E2 07>)
+(   5,<2024-11-11T17:02:55.433+0000>,<nmrsu>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       data hash MD5: 512K * 16
+       27 31 27 83 9C 47 24 EA A6 5E F6 8D A2 59 6A CA>)
+(   6,<2024-11-11T17:08:08.329+0000>,<nmrsu>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       data hash MD5: 512K * 16
+       71 B1 ED F0 7D 63 AB 44 96 55 1B 35 04 EF 9A 00>)
+(   7,<2024-11-11T17:09:52.948+0000>,<nmrsu>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       data hash MD5: 512K * 16
+       2F AD 3F 2A 78 DE 63 CB AF D3 3E 80 04 2E E5 69>)
+(   8,<2024-11-11T17:12:58.273+0000>,<nmrsu>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       data hash MD5: 512K * 16
+       2F AD 3F 2A 78 DE 63 CB AF D3 3E 80 04 2E E5 69>)
+(   9,<2024-11-11T17:14:32.330+0000>,<nmrsu>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       data hash MD5: 512K * 16
+       94 54 53 9B 95 AA E8 3D 74 A7 F5 E7 8E E3 7D 44>)
+(  10,<2024-11-11T17:17:03.639+0000>,<nmrsu/admins>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 same F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       data hash MD5: 512K * 16
+       E6 F6 3B E5 12 CD 40 FD C2 C6 61 1E 44 2E 33 85>)
+(  11,<2024-11-11T17:17:03.702+0000>,<nmrsu/admins>,<localhost.localdomain>,<xwish3>,<TopSpin 4.4.0>,
+      <ICON-NMR User ID: admins
+       data hash MD5: 512K * 16
+       E6 F6 3B E5 12 CD 40 FD C2 C6 61 1E 44 2E 33 85>)
+$$ /Users/chris/NMR/sop-600/nikita_19Ffragment_C1_BSA_241111/12/pdata/1/auditp.txt
+(  12,<2024-11-16T21:07:37.596+0000>,<chris>,<johann.cust.communityfibre.co.uk>,<cprserver>,<TopSpin 4.4.0>,
+      <changed parameter F2 SI to 32768>)
+(  13,<2024-11-16T21:07:40.660+0000>,<chris>,<johann.cust.communityfibre.co.uk>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 32K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       data hash MD5: 32K * 16
+       2D 4D 18 65 61 12 5A 05 E5 4A 18 4B 2C 1C 58 69>)
+##END=
+
+$$ hash MD5
+$$ 7A D4 80 CE 0D 04 4A 82 00 41 31 AD 46 76 C1 D6

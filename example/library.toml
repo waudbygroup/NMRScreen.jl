@@ -1,0 +1,6 @@
+# library.toml
+# Fragment library and cocktail compositions
+
+name = "Fluorine Fragment Library Example"
+cocktails = "cocktails.csv"
+fragments = "fragments.csv"

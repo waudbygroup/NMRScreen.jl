@@ -1,0 +1,11 @@
+##TITLE= Parameter file, TopSpin 4.4.0
+##JCAMPDX= 5.0
+##DATATYPE= Parameter Values
+##NPOINTS= 1	$$ modification sequence number
+##ORIGIN= Bruker BioSpin GmbH & Co. KG
+##OWNER= chris
+$$ 2024-11-09 11:41:05.603 +0000  chris@johann.cust.communityfibre.co.uk
+$$ /Users/chris/NMR/sop-600/nikita_19Ffragment_C4_BSA_241108/42/pdata/1/assocs
+$$ process /opt/topspin4.4.0/prog/mod/dataserver
+##$MULTDISP= </Users/chris/NMR/sop-600/nikita_19Ffragment_C4_BSA_241108/12/pdata/1>
+##END=

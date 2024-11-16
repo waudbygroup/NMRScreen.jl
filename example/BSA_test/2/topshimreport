@@ -1,0 +1,55 @@
+
+New TopShim run:
+
+version = topshim 4.4.0
+date = 2024-10-10
+time = 11:55:05.699
+command = topshim ss convcomp ordmax=8 tunea
+
+FINE SHIMMING
+
+Parameters:
+
+probe = Z114073_0024
+solvent = H2O+D2O
+shim nucleus = 1H
+nucleus optimised for = 19F
+o1p (from lock) = 4.70 ppm
+
+Results:
+
+NOTE: No 19F B1-profile found. Optimizing shimming as if for NMR nucleus = 1H
+
+
+1D Shimming:
+Iteration 1: FWHM Before= 0.5 Hz, Target= 0.3 Hz, After= 0.2 Hz
+Iteration 2: FWHM Before= 0.2 Hz, Target= 0.2 Hz, After= 0.9 Hz
+Iteration 3: FWHM Before= 0.9 Hz, Target= 0.2 Hz, After= 0.2 Hz
+Shim succeeded
+
+Lineshape quality factor (1D spectrum, spinning) = 0.341
+
+
+Performing tune after shimming
+tune lock level increase = 1.3
+
+shim changes: 
+Z	+322
+Z2	+11
+Z3	+44
+Z4	+14
+Z5	-115
+Z6	-1843
+Z7	-230
+Z8	+11282
+X	-59
+XZ	+136
+Y	-27
+YZ	-3
+
+duration = 2 min 29 sec
+completed successfully
+finished Thu Oct 10 11:57:34 2024
+
+
+========================================================================

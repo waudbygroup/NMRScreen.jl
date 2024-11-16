@@ -1,0 +1,61 @@
+# results_template.toml
+# Expected results of program execution
+
+[library]
+name = "Fluorine Fragment Library v1"
+total_fragments = 480
+number_of_cocktails = 16
+
+
+# cocktail data
+
+[[cocktails]]
+id = "C01"
+name = "Cocktail 1"
+fragments = ["F001", "F002"]
+
+
+# chemical shift data
+
+[[results]]
+fragment_id = "F001"
+peak_number = 1
+library_shift = -63.2 # ppm
+reference_shift = -63.2 # ppm
+bound_shift = -63.2 # ppm
+chemical_shift_perturbation = 0
+intensity_ratio = 0.8
+intensity_ratio_error = 0.1
+reference_R2 = 1.5 # s-1
+reference_R2_error = 0.1 # s-1
+bound_R2 = 13 # s-1
+bound_R2_error = 0.3 # s-1
+DeltaR2 = 11.5 # s-1
+DeltaR2_error = 0.4 # s-1
+
+[[results]]
+fragment_id = "F002-a"
+library_shift = -100 # ppm
+reference_shift = -100.3 # ppm
+bound_shift = -100.5 # ppm
+intensity_ratio = 0.8
+intensity_ratio_error = 0.1
+reference_R2 = 1.5 # s-1
+reference_R2_error = 0.1 # s-1
+bound_R2 = 13 # s-1
+bound_R2_error = 0.3 # s-1
+DeltaR2 = 11.5 # s-1
+DeltaR2_error = 0.4 # s-1
+
+[[results]]
+fragment_id = "F001-b-deg"
+reference_shift = -63.2 # ppm
+bound_shift = -63.2 # ppm
+intensity_ratio = 0.8
+intensity_ratio_error = 0.1
+reference_R2 = 1.5 # s-1
+reference_R2_error = 0.1 # s-1
+bound_R2 = 13 # s-1
+bound_R2_error = 0.3 # s-1
+DeltaR2 = 11.5 # s-1
+DeltaR2_error = 0.4 # s-1

@@ -1,0 +1,174 @@
+function gui(state)
+    fig = Figure(size = (1200, 800))
+
+    # Top panel
+    top_panel = fig[1, 1] = GridLayout()
+    button_left = top_panel[1, 1] = Button(fig, label = "<")
+    button_right = top_panel[1, 2] = Button(fig, label = ">")
+    slider_cocktails = top_panel[1,3] = Slider(fig, range = 1:state["n_cocktails"])
+    connect!(state["current_cocktail_number"], slider_cocktails.value)
+    slider_peaks = top_panel[1,4] = Slider(fig, range = @lift(1:$(state["n_peaks"])))
+    connect!(state["current_peak_number"], slider_peaks.value)
+    info_label = top_panel[1,5] = Label(fig, state["labeltext"])
+    save_button = top_panel[1,6] = Button(fig, label = "Save")
+    colsize!(top_panel, 5, Relative(1/3))
+
+
+    # Middle panel
+    middle_panel = fig[2, 1] = GridLayout()
+    ref_spectra_plot = middle_panel[1,1] = Axis(fig,
+        xreversed=true,
+        yzoomlock=true,
+        ypanlock=true,
+        xrectzoom=true,
+        yrectzoom=false,
+        xlabel="Chemical shift (ppm)",
+        ylabel="Intensity",
+        title="Reference")
+    hideydecorations!(ref_spectra_plot)
+    bound_spectra_plot = middle_panel[2,1] = Axis(fig,
+        xreversed=true,
+        yzoomlock=true,
+        ypanlock=true,
+        xrectzoom=true,
+        yrectzoom=false,
+        xlabel="Chemical shift (ppm)",
+        ylabel="Intensity",
+        title="Bound")
+    hideydecorations!(bound_spectra_plot)
+    linkaxes!(ref_spectra_plot, bound_spectra_plot)
+
+    lines!(ref_spectra_plot, state["reference_plot_x"], state["reference_plot_y"], label = "Reference")
+    lines!(bound_spectra_plot, state["bound_plot_x"], state["bound_plot_y"], label = "Bound")
+
+    vlines!(ref_spectra_plot, state["library_shifts"], color=:orange, ymin=0.8)
+    
+    scatter!(ref_spectra_plot, state["ref_points"], color=:black)
+    scatter!(bound_spectra_plot, state["bound_points"], color=:black)
+    scatter!(ref_spectra_plot, state["current_ref_x"], state["current_ref_y"], color = :red, markersize=10)
+    scatter!(bound_spectra_plot, state["current_bound_x"], state["current_bound_y"], color = :red, markersize=10)
+
+    on(slider_peaks.value) do n
+        xl1, xl2 = ref_spectra_plot.xaxis.attributes.limits[]
+        mn,mx = extrema(data(state["reference_spec"][],F1Dim))
+        sw = mx - mn
+        xw = xl2 - xl1
+        x = state["ref_points"][][n][1]
+        nx1 = x - xw / 2
+        nx2 = x + xw / 2
+        if sw > xw # zoomed in
+            if nx1 < mn
+                nx1 = mn
+                nx2 = mn + xw
+            elseif nx2 > mx
+                nx2 = mx
+                nx1 = mx - xw
+            end
+        else # zoomed out
+            if nx1 > mn
+                nx1 = mn
+                nx2 = mn + xw
+            elseif nx2 < mx
+                nx2 = mx
+                nx1 = mx - xw
+            end
+        end
+        xlims!(ref_spectra_plot, (nx2, nx1))
+    end
+
+
+    # Bottom-left panel
+    bottom_panel = fig[3, 1] = GridLayout()
+    peak_info_label = bottom_panel[1,1] = Label(fig, state["peakinfotext"])
+    
+    # setup relaxation plot
+    relaxation_plot = bottom_panel[2,1] = Axis(fig,
+        xlabel="Relaxation time (ms)",
+        ylabel="Intensity",
+        limits=(nothing, (-.1, 1.1)))
+        # limits=(nothing, (0, nothing))) # TODO don't fix this to zero if there are negative values
+    errorbars!(relaxation_plot,
+        @lift(1000*$(state["reference_relaxation"]).t),
+        @lift($(state["reference_relaxation"]).y),
+        @lift($(state["reference_relaxation"]).ye))
+    errorbars!(relaxation_plot,
+        @lift(1000*$(state["bound_relaxation"]).t),
+        @lift($(state["bound_relaxation"]).y),
+        @lift($(state["bound_relaxation"]).ye))
+    scatter!(relaxation_plot,
+        @lift(1000*$(state["reference_relaxation"]).t),
+        @lift($(state["reference_relaxation"]).y),
+        label = "Reference")
+    scatter!(relaxation_plot,
+        @lift(1000*$(state["bound_relaxation"]).t),
+        @lift($(state["bound_relaxation"]).y),
+        label = "Bound")
+    lines!(relaxation_plot,
+        @lift(1000*$(state["reference_relaxation"]).tpred),
+        @lift($(state["reference_relaxation"]).ypred))
+    lines!(relaxation_plot,
+        @lift(1000*$(state["bound_relaxation"]).tpred),
+        @lift($(state["bound_relaxation"]).ypred))
+    axislegend(relaxation_plot)
+    
+
+    # # Bottom-right panel
+    # menu = bottom_panel[1,2] = Menu(fig, options = ["DeltaR2", "Relative Intensity", "CSP", "Base R2"])
+    menu = bottom_panel[1,2] = Menu(fig, options = ["ΔR₂", "Relative Intensity", "Chemical Shift Perturbation", "Reference R₂"])
+    on(menu.selection) do s
+        if s == "ΔR₂"
+            connect!(state["heatmap_data"], state["DeltaR2_heatmap"])
+            state["heatmap_label"][] = "ΔR₂ (s⁻¹)"
+            state["heatmap_limits"][] = (0., maximum(filter(!isnan,state["DeltaR2_heatmap"][])))
+            state["heatmap_cm"][] = :viridis
+        elseif s == "Relative Intensity"
+            connect!(state["heatmap_data"], state["II0_heatmap"])
+            state["heatmap_label"][] = "I/I₀"
+            state["heatmap_limits"][] = (0., 1.)
+            state["heatmap_cm"][] = Reverse(:viridis)
+        elseif s == "Reference R₂"
+            connect!(state["heatmap_data"], state["refR2_heatmap"])
+            state["heatmap_label"][] = "Reference R₂ (s⁻¹)"
+            state["heatmap_limits"][] = (0., maximum(filter(!isnan,state["refR2_heatmap"][])))
+            state["heatmap_cm"][] = :viridis
+        elseif s == "Chemical Shift Perturbation"
+            connect!(state["heatmap_data"], state["csps_heatmap"])
+            state["heatmap_label"][] = "Chemical Shift Perturbation (ppm)"
+            state["heatmap_limits"][] = (0., maximum(filter(!isnan,state["csps_heatmap"][])))
+            state["heatmap_cm"][] = :viridis
+        end
+    end
+    notify(menu.selection)
+
+    ax_heatmap = bottom_panel[2,2] = Axis(fig,
+        xlabel="Peak",
+        ylabel="Cocktail",
+        yticks=(1:state["n_cocktails"], state["cocktail_ids"])
+        )
+    hm = heatmap!(ax_heatmap, state["heatmap_data"],
+        colormap=state["heatmap_cm"],
+        colorrange=state["heatmap_limits"])
+    Colorbar(bottom_panel[2,3], hm, label=state["heatmap_label"])
+    scatter!(ax_heatmap, state["heatmap_point"], color=:red, marker=:star5)
+    # Event handler for heatmap click
+    on(events(ax_heatmap).mousebutton) do event
+        if event.button == Mouse.left && event.action == Mouse.release
+            i = pick(ax_heatmap)[2]
+            i > 0 || return
+            idx = CartesianIndices(state["heatmap_data"][])[i]
+            peak_idx = idx[1]
+            cocktail_idx = idx[2]
+            if peak_idx <= length(state["cocktails"][cocktail_idx].peaks)
+                slider_cocktails.value[] = cocktail_idx
+                slider_peaks.value[] = peak_idx
+                # state["current_cocktail_number"][] = cocktail_idx
+                # state["current_peak_number"][] = peak_idx
+            end
+        end
+    end
+
+    colsize!(bottom_panel, 1, Relative(1/3))
+
+    fig
+end
+

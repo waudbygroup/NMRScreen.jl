@@ -1,0 +1,56 @@
+##TITLE= Audit trail, TopSpin 4.4.0
+##JCAMPDX= 5.01
+##ORIGIN= Bruker BioSpin GmbH & Co. KG
+##OWNER= nmrsu
+$$ /opt/nmrdata-manual/data/admins/nmr/nikita_19Ffragment_C4_BSA_241108/12/pdata/1/auditp.txt
+##AUDIT TRAIL=  $$ (NUMBER, WHEN, WHO, WHERE, PROCESS, VERSION, WHAT)
+(   1,<2024-11-08T16:44:55.749+0000>,<nmrsu>,<localhost>,<go4>,<TopSpin 4.4.0>,
+      <acquisition in progress>)
+(   2,<2024-11-08T17:02:49.611+0000>,<nmrsu>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 512K WDW = 1 LB = 3 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 64
+       data hash MD5: 512K * 64
+       E6 6F 37 04 E6 5E E6 2F 05 F8 0E DE F4 D3 45 B1>)
+(   3,<2024-11-08T17:02:58.869+0000>,<nmrsu>,<localhost.localdomain>,<cprserver>,<TopSpin 4.4.0>,
+      <changed parameter F2 LB to 10.00>)
+(   4,<2024-11-08T17:03:00.532+0000>,<nmrsu>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 64
+       data hash MD5: 512K * 64
+       8F 76 E3 15 EA F8 56 4F FB CE F6 49 38 78 7D 07>)
+(   5,<2024-11-08T17:05:51.779+0000>,<nmrsu>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 64
+       data hash MD5: 512K * 64
+       64 57 8C DF 15 75 9C 7B 5F AB 5B 13 6A FD 89 22>)
+(   6,<2024-11-08T17:31:19.850+0000>,<nmrsu/admins>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 same F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 64
+       data hash MD5: 512K * 64
+       C7 21 36 6A 5F 20 D6 3F 39 6F 00 FF 9D 56 B0 FB>)
+(   7,<2024-11-08T17:31:20.081+0000>,<nmrsu/admins>,<localhost.localdomain>,<xwish3>,<TopSpin 4.4.0>,
+      <ICON-NMR User ID: admins
+       data hash MD5: 512K * 64
+       C7 21 36 6A 5F 20 D6 3F 39 6F 00 FF 9D 56 B0 FB>)
+(   8,<2024-11-09T11:28:03.638+0000>,<nmrsu>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 64
+       data hash MD5: 512K * 64
+       C7 21 36 6A 5F 20 D6 3F 39 6F 00 FF 9D 56 B0 FB>)
+$$ /Users/chris/NMR/sop-600/nikita_19Ffragment_C4_BSA_241108/12/pdata/1/auditp.txt
+(   9,<2024-11-11T20:03:35.175+0000>,<chris>,<johann.local>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 64
+       data hash MD5: 512K * 64
+       62 39 BB 34 93 A8 3E 4C FB 69 9E 19 77 7B 5E 47>)
+(  10,<2024-11-11T20:08:55.121+0000>,<chris>,<johann.local>,<cprserver>,<TopSpin 4.4.0>,
+      <changed parameter F2 SI to 65536>)
+(  11,<2024-11-11T20:08:56.166+0000>,<chris>,<johann.local>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 64K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 64
+       data hash MD5: 64K * 64
+       8C 5E E2 CD 29 7E 41 B6 DC 9D 60 19 EB 4D 54 6F>)
+##END=
+
+$$ hash MD5
+$$ 09 2F 7E 5D E6 B2 28 C7 DA 7E BF C6 B6 B7 BD EB

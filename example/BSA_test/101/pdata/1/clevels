@@ -1,0 +1,28 @@
+##TITLE= Parameter file, TopSpin 4.4.0
+##JCAMPDX= 5.0
+##DATATYPE= Parameter Values
+##NPOINTS= 1	$$ modification sequence number
+##ORIGIN= Bruker BioSpin GmbH & Co. KG
+##OWNER= nmrsu
+$$ 2024-11-11 16:03:50.484 +0000  nmrsu@localhost.localdomain
+$$ /opt/topspin4.4.0/prog/curdir/changer/inmrchanger/Nov08-2024-1625-nmrsu/101/101.612/data/nmr/nikita_19Ffragment_C1_BSA_241111/12/pdata/1/clevels
+$$ process /opt/topspin4.4.0/prog/mod/xwish3
+##$LEVELS= (0..255)
+-83489917051.0209 -46383287250.5672 -25768492916.9818 -14315829398.3232
+-7953238554.624 -4418465863.68 -2454703257.6 -1363724032 1363724032 2454703257.6
+4418465863.68 7953238554.624 14315829398.3232 25768492916.9818 46383287250.5672
+83489917051.0209 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+##$LEVSIGN= 3
+##$MAXLEV= 8
+##$METHOD= 0
+##$NEGBASE= -1363724032
+##$NEGINCR= 1.8
+##$POSBASE= 1363724032
+##$POSINCR= 1.8
+##END=

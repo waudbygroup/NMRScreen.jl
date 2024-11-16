@@ -1,0 +1,51 @@
+##TITLE= Audit trail, TopSpin 4.4.0
+##JCAMPDX= 5.01
+##ORIGIN= Bruker BioSpin GmbH & Co. KG
+##OWNER= nmrsu
+$$ /opt/nmrdata-manual/data/admins/nmr/nikita_19Ffragment_C2_241004/4/pdata/1/auditp.txt
+##AUDIT TRAIL=  $$ (NUMBER, WHEN, WHO, WHERE, PROCESS, VERSION, WHAT)
+(   1,<2024-10-10T10:57:34.510+0000>,<nmrsu>,<localhost>,<go4>,<TopSpin 4.4.0>,
+      <acquisition in progress>)
+$$ /opt/nmrdata-manual/data/admins/nmr/nikita_19Ffragment_C2_241004/4/audita.txt
+(   2,<2024-10-10T11:43:51.472+0000>,<nmrsu>,<localhost>,<go4>,<TopSpin 4.4.0>,
+      <created by zg on 'AV NEO 600' (localhost) by user 'nmrsu'
+       on data set with UUID '7440a744-86f6-11ef-bb44-0030d62dd8c2'
+       started at 2024-10-10 10:57:34.510 +0000, POWCHK enabled, PULCHK disabled,
+       completed at 2024-10-10 11:43:51.471 +0000
+       configuration hash MD5:
+       67 16 A1 F6 73 49 13 43 3A D4 2A 0D B3 9A A4 0B
+       double data hash MD5: 256K * 51
+       EC 83 8C 1F A5 A4 23 16 62 C2 12 00 79 68 57 90>)
+(   3,<2024-10-10T12:43:52.322+0100>,<nmrsu>,<localhost.localdomain>,<xwish3>,<TopSpin 4.4.0>,
+      <ICON-NMR User ID: admins
+       double data hash MD5: 256K * 51
+       EC 83 8C 1F A5 A4 23 16 62 C2 12 00 79 68 57 90>)
+(   4,<2024-10-10T12:43:54.976+0100>,<nmrsu/admins>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 same F2: SI = 512K WDW = 1 LB = 3 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 64
+       data hash MD5: 512K * 64
+       5B 39 DD 1E 70 D6 53 94 79 F4 C5 92 B9 D1 B4 26>)
+$$ /opt/nmrdata-manual/data/admins/nmr/nikita_19Ffragment_C2_241004/4/pdata/1/auditp.txt
+(   5,<2024-10-10T12:43:55.211+0100>,<nmrsu/admins>,<localhost.localdomain>,<xwish3>,<TopSpin 4.4.0>,
+      <ICON-NMR User ID: admins
+       data hash MD5: 512K * 64
+       5B 39 DD 1E 70 D6 53 94 79 F4 C5 92 B9 D1 B4 26>)
+$$ /Users/chris/NMR/sop-600/nikita_19Ffragment_C2_241004/4/pdata/1/auditp.txt
+(   6,<2024-11-16T21:05:19.979+0000>,<chris>,<johann.cust.communityfibre.co.uk>,<cprserver>,<TopSpin 4.4.0>,
+      <changed parameter F2 SI to 32768>)
+(   7,<2024-11-16T21:05:20.941+0000>,<chris>,<johann.cust.communityfibre.co.uk>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 32K WDW = 1 LB = 3 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 64
+       data hash MD5: 32K * 64
+       54 1C 9D 4B AB 8C 4D C6 E7 D7 55 17 19 CF 85 E0>)
+(   8,<2024-11-16T21:05:41.642+0000>,<chris>,<johann.cust.communityfibre.co.uk>,<cprserver>,<TopSpin 4.4.0>,
+      <changed parameter F2 LB to 10.00>)
+(   9,<2024-11-16T21:05:51.609+0000>,<chris>,<johann.cust.communityfibre.co.uk>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 F2: SI = 32K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 64
+       data hash MD5: 32K * 64
+       93 C1 89 79 6F 3F 56 B8 40 50 A6 00 18 53 20 89>)
+##END=
+
+$$ hash MD5
+$$ B9 A8 9A EE 1B 43 17 88 B7 5B CB F7 6F 80 13 FE

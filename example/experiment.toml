@@ -1,0 +1,37 @@
+# experiment.toml
+# Configuration for NMR fragment screening experiment
+
+[setup]
+name = "BSA Fragment Screen Test"
+date = "2024-11-11"
+operator = "Chris Waudby"
+spectrometer = "Obi-Wan"
+temperature = 298.0  # Kelvin
+tube_diameter = 5 # mm
+
+[files]
+fragment_library = "library.toml"
+experiment_directory = "BSA_test"
+output_directory = "out"
+
+[protein]
+name = "BSA"
+concentration = 0.2
+concentration_unit = "mg/mL"
+buffer = "50mM Tris pH 7.4, 100mM NaCl"
+
+[[cocktails]]
+id = "C1" # ID must correspond to fragment library
+reference = "1"  # fragment-only control
+experiment = "101" # fragment + macromolecule experiment
+
+[[cocktails]]
+id = "C2" # ID must correspond to fragment library
+reference = "2"  # fragment-only control
+experiment = "102" # fragment + macromolecule experiment
+
+
+[[cocktails]]
+id = "C4" # ID must correspond to fragment library
+reference = "4"  # fragment-only control
+experiment = "104" # fragment + macromolecule experiment
