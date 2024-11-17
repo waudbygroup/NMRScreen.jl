@@ -14,6 +14,8 @@ function fitrelaxation(spec)
     fit = curve_fit(model, t, y, p0)
     I0, R2 = coef(fit)
     I0err, R2err = stderror(fit)
+    resid = fit.resid ./ yerr
+    reducedchi2 = sum(resid.^2) / (length(y) - length(p0))
 
     # store fitted curve for plotting
     tpred = range(0, maximum(t), 100)
@@ -30,7 +32,7 @@ function fitrelaxation(spec)
     tye = [(1000*t[i], y[i], yerr[i]) for i in 1:length(t)]
     typred = [Point2f(1000*tpred[i], ypred[i]) for i in 1:length(tpred)]
     
-    RelaxationResult(R2, R2err, I0, I0err, ty, tye, typred)
+    RelaxationResult(R2, R2err, I0, I0err, ty, tye, typred, reducedchi2)
 end
 
 Base.show(io::IO, result::RelaxationResult) = print(io, "R2: ", result.R2 ± result.R2_error, " s-1")

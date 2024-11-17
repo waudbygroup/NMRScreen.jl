@@ -75,6 +75,7 @@ struct RelaxationResult
     ty
     tye
     typred
+    reducedchi2
 end
 
 """
@@ -102,6 +103,7 @@ struct ScreeningPeak
     refspec
     boundspec
     peak_id
+    fragment_id
     cocktail_id
     library_shift
     reference_shift

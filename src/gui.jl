@@ -12,7 +12,17 @@ function gui(state)
     slider_peaks = top_panel[1,6] = Slider(fig, range = @lift(1:$(state["n_peaks"])))
     connect!(state["current_peak_number"], slider_peaks.value)
     info_label = top_panel[1,7] = Label(fig, state["labeltext"])
-    save_button = top_panel[1,8] = Button(fig, label = "Save")
+    ax_structure = Axis(top_panel[1,8], aspect = DataAspect(), backgroundcolor = :white, height=80,
+        xzoomlock=true,
+        yzoomlock=true,
+        xrectzoom=false,
+        yrectzoom=false,
+        xpanlock=true,
+        ypanlock=true,)
+    hidedecorations!(ax_structure)
+    hidespines!(ax_structure)
+    image!(ax_structure, state["structure"])
+    save_button = top_panel[1,9] = Button(fig, label = "Save")
     colsize!(top_panel, 7, Relative(1/3))
 
     on(button_left.clicks) do _
@@ -134,7 +144,7 @@ function gui(state)
 
     # # Bottom-right panel
     # menu = bottom_panel[1,2] = Menu(fig, options = ["DeltaR2", "Relative Intensity", "CSP", "Base R2"])
-    menu = bottom_panel[1,2] = Menu(fig, options = ["ΔR₂", "Relative Intensity", "Chemical Shift Perturbation", "Reference R₂"])
+    menu = bottom_panel[1,2] = Menu(fig, options = ["ΔR₂", "Relative Intensity", "Chemical Shift Perturbation", "Reference R₂", "Reduced χ²"])
     on(menu.selection) do s
         if s == "ΔR₂"
             connect!(state["heatmap_data"], state["DeltaR2_heatmap"])
@@ -155,6 +165,11 @@ function gui(state)
             connect!(state["heatmap_data"], state["csps_heatmap"])
             state["heatmap_label"][] = "Chemical Shift Perturbation (ppm)"
             state["heatmap_limits"][] = (0., maximum(filter(!isnan,state["csps_heatmap"][])))
+            state["heatmap_cm"][] = :viridis
+        elseif s == "Reduced χ²"
+            connect!(state["heatmap_data"], state["reducedchi2_heatmap"])
+            state["heatmap_label"][] = "Reduced χ²"
+            state["heatmap_limits"][] = (0., maximum(filter(!isnan,state["reducedchi2_heatmap"][])))
             state["heatmap_cm"][] = :viridis
         end
     end
@@ -203,6 +218,8 @@ function gui(state)
             state["heatmap_limits"][] = (0., clamp(state["heatmap_limits"][][2] + dy, 1..100))
         elseif s == "Chemical Shift Perturbation"
             state["heatmap_limits"][] = (0., clamp(state["heatmap_limits"][][2] + dy/100, 0.01,2))
+        elseif s == "Reduced χ²"
+            state["heatmap_limits"][] = (0., clamp(state["heatmap_limits"][][2] + dy, 1,100))
         end
     end
 

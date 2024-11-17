@@ -26,7 +26,7 @@ function makescreeningpeaks(refspec, boundspec, cocktail_id, librarypeak_ids, li
         libpeak = matched_librarypeaks2[i]
         refpeak = matched_refpeaks2[i]
         boundpeak = matched_boundpeaks[i]
-        newpeak = ScreeningPeak(refspec, boundspec, peak_id, cocktail_id, libpeak, refpeak, boundpeak)
+        newpeak = ScreeningPeak(refspec, boundspec, peak_id, peak_id[1:end-1], cocktail_id, libpeak, refpeak, boundpeak)
         push!(screeningpeaks, newpeak)
     end
     reverse!(screeningpeaks)
@@ -38,6 +38,7 @@ end
 function ScreeningPeak(refspec,
         boundspec,
         peak_id,
+        fragment_id,
         cocktail_id,
         library_shift,
         reference_shift,
@@ -54,6 +55,7 @@ function ScreeningPeak(refspec,
     ScreeningPeak(refspec,
         boundspec,
         peak_id,
+        fragment_id,
         cocktail_id,
         library_shift,
         reference_shift,
@@ -90,4 +92,8 @@ end
 
 function csp(sp::ScreeningPeak)
     sp.bound_shift - sp.reference_shift
+end
+
+function reducedchi2(sp::ScreeningPeak)
+    (sp.reference_relaxation.reducedchi2 + sp.bound_relaxation.reducedchi2) / 2
 end

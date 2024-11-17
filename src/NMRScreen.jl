@@ -1,10 +1,11 @@
 module NMRScreen
 
+using FileIO
 using GLMakie
-# using Plots
 using LinearAlgebra
 using LsqFit
 using Measurements
+using MolecularGraph
 using NMRTools
 using Peaks
 using TOML
@@ -19,9 +20,9 @@ include("cocktails.jl")
 include("registration.jl")
 include("relaxation.jl")
 include("screeningpeaks.jl")
+include("smiles.jl")
 include("state.jl")
 # include("fileio.jl")
-# include("analysis.jl")
 include("gui.jl")
 
 """

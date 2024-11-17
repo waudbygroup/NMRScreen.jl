@@ -37,6 +37,10 @@ function initialisestate(config, library, cocktails)
     state["II0_heatmap"] = Observable(II0s(state))
     state["DeltaR2_heatmap"] = Observable(DeltaR2s(state))
     state["refR2_heatmap"] = Observable(refR2s(state))
+    state["reducedchi2_heatmap"] = Observable(reducedchi2s(state))
+
+    state["smiles"] = lift(i -> library.fragments[i.fragment_id].smiles, state["current_peak"])
+    state["structure"] = lift(i -> smilestoimage(i), state["smiles"])
 
     addguistuff!(state)
     return state
@@ -123,4 +127,15 @@ function csps(state)
     end
 
     return csps
+end
+
+function reducedchi2s(state)
+    reducedchi2s = fill(NaN, state["max_peaks"], state["n_cocktails"])
+    for (i, cocktail) in enumerate(state["cocktails"])
+        for (j, peak) in enumerate(cocktail.peaks)
+            reducedchi2s[j, i] = reducedchi2(peak)
+        end
+    end
+
+    return reducedchi2s
 end
