@@ -7,7 +7,7 @@
 - [x] Add heat maps for base R2 and CSPs
 - [x] Test with multiple cocktails and different numbers of peaks
 - [ ] Sort peaks by chemical shift
-- [ ] left/right buttons
+- [x] left/right buttons
 - [ ] summary plots (ranked R2 etc)
 - [ ] click points on spectrum to highlight
 - [ ] save button

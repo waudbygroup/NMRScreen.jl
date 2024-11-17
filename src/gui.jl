@@ -5,13 +5,42 @@ function gui(state)
     top_panel = fig[1, 1] = GridLayout()
     button_left = top_panel[1, 1] = Button(fig, label = "<")
     button_right = top_panel[1, 2] = Button(fig, label = ">")
-    slider_cocktails = top_panel[1,3] = Slider(fig, range = 1:state["n_cocktails"])
+    slider_cocktail_label = top_panel[1,3] = Label(fig, "Cocktail")
+    slider_cocktails = top_panel[1,4] = Slider(fig, range = 1:state["n_cocktails"])
     connect!(state["current_cocktail_number"], slider_cocktails.value)
-    slider_peaks = top_panel[1,4] = Slider(fig, range = @lift(1:$(state["n_peaks"])))
+    slider_peak_label = top_panel[1,5] = Label(fig, "Peak")
+    slider_peaks = top_panel[1,6] = Slider(fig, range = @lift(1:$(state["n_peaks"])))
     connect!(state["current_peak_number"], slider_peaks.value)
-    info_label = top_panel[1,5] = Label(fig, state["labeltext"])
-    save_button = top_panel[1,6] = Button(fig, label = "Save")
-    colsize!(top_panel, 5, Relative(1/3))
+    info_label = top_panel[1,7] = Label(fig, state["labeltext"])
+    save_button = top_panel[1,8] = Button(fig, label = "Save")
+    colsize!(top_panel, 7, Relative(1/3))
+
+    on(button_left.clicks) do _
+        i = state["current_cocktail_number"][]
+        j = state["current_peak_number"][]
+        if j > 1
+            j -= 1
+            set_close_to!(slider_peaks, j)
+        elseif i > 1
+            i -= 1
+            j = length(state["cocktails"][i].peaks)
+            set_close_to!(slider_cocktails, i)
+            set_close_to!(slider_peaks, j)
+        end
+    end
+    on(button_right.clicks) do _
+        i = state["current_cocktail_number"][]
+        j = state["current_peak_number"][]
+        if j < length(state["cocktails"][i].peaks)
+            j += 1
+            set_close_to!(slider_peaks, j)
+        elseif i < state["n_cocktails"]
+            i += 1
+            j = 1
+            set_close_to!(slider_cocktails, i)
+            set_close_to!(slider_peaks, j)
+        end
+    end
 
 
     # Middle panel
@@ -87,6 +116,12 @@ function gui(state)
     relaxation_plot = bottom_panel[2,1] = Axis(fig,
         xlabel="Relaxation time (ms)",
         ylabel="Intensity",
+        xzoomlock=true,
+        yzoomlock=true,
+        xrectzoom=false,
+        yrectzoom=false,
+        xpanlock=true,
+        ypanlock=true,
         limits=(nothing, (-.1, 1.1)))
     errorbars!(relaxation_plot, @lift($(state["reference_relaxation"]).tye))
     errorbars!(relaxation_plot, @lift($(state["bound_relaxation"]).tye))
@@ -128,12 +163,18 @@ function gui(state)
     ax_heatmap = bottom_panel[2,2] = Axis(fig,
         xlabel="Peak",
         ylabel="Cocktail",
+        xzoomlock=true,
+        yzoomlock=true,
+        xrectzoom=false,
+        yrectzoom=false,
+        xpanlock=true,
+        ypanlock=true,
         yticks=(1:state["n_cocktails"], state["cocktail_ids"])
         )
     hm = heatmap!(ax_heatmap, state["heatmap_data"],
         colormap=state["heatmap_cm"],
         colorrange=state["heatmap_limits"])
-    Colorbar(bottom_panel[2,3], hm, label=state["heatmap_label"])
+    cb = Colorbar(bottom_panel[2,3], hm, label=state["heatmap_label"])
     scatter!(ax_heatmap, state["heatmap_point"], color=:red, marker=:star5)
     # Event handler for heatmap click
     on(events(ax_heatmap).mousebutton) do event
@@ -150,6 +191,18 @@ function gui(state)
                 # state["current_cocktail_number"][] = cocktail_idx
                 # state["current_peak_number"][] = peak_idx
             end
+        end
+    end
+    on(events(ax_heatmap).scroll) do (_, dy)
+        s = menu.selection[]
+        if s == "ΔR₂"
+            state["heatmap_limits"][] = (0., clamp(state["heatmap_limits"][][2] + dy, 1..100))
+        elseif s == "Relative Intensity"
+            state["heatmap_limits"][] = (clamp(state["heatmap_limits"][][1] + dy/10, 0..0.9), 1.)
+        elseif s == "Reference R₂"
+            state["heatmap_limits"][] = (0., clamp(state["heatmap_limits"][][2] + dy, 1..100))
+        elseif s == "Chemical Shift Perturbation"
+            state["heatmap_limits"][] = (0., clamp(state["heatmap_limits"][][2] + dy/100, 0.01,2))
         end
     end
 
