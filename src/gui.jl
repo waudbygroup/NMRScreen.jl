@@ -1,5 +1,9 @@
 function gui(state)
     fig = Figure(size = (1200, 800))
+    c1 = Makie.wong_colors()[1]
+    c2 = Makie.wong_colors()[2]
+    c3 = Makie.wong_colors()[3]
+    c4 = Makie.wong_colors()[6]
 
     # Top panel
     top_panel = fig[1, 1] = GridLayout()
@@ -65,27 +69,16 @@ function gui(state)
         ylabel="Intensity",
         )
     hideydecorations!(ref_spectra_plot)
-    # bound_spectra_plot = middle_panel[2,1] = Axis(fig,
-    #     xreversed=true,
-    #     yzoomlock=true,
-    #     ypanlock=true,
-    #     xrectzoom=true,
-    #     yrectzoom=false,
-    #     xlabel="Chemical shift (ppm)",
-    #     ylabel="Intensity",
-    #     title="Bound")
-    # hideydecorations!(bound_spectra_plot)
-    # linkaxes!(ref_spectra_plot, bound_spectra_plot)
 
-    lines!(ref_spectra_plot, state["reference_plot"], label = "Reference")
-    lines!(ref_spectra_plot, state["bound_plot"], label = "Bound")
-
-    vlines!(ref_spectra_plot, state["library_shifts"], color=:orange, ymin=0.8)
+    vlines!(ref_spectra_plot, state["library_shifts"], color=c3, ymin=0.85, label="Library")
+    lines!(ref_spectra_plot, state["reference_plot"], label = "Reference", color=c1)
+    lines!(ref_spectra_plot, state["bound_plot"], label = "Bound", color=c2)
+    axislegend(ref_spectra_plot)
     
-    scatter!(ref_spectra_plot, state["ref_points"])#, color=:black)
-    scatter!(ref_spectra_plot, state["bound_points"])#, color=:black)
-    scatter!(ref_spectra_plot, state["current_ref_x"], state["current_ref_y"], color = :red, markersize=10)
-    scatter!(ref_spectra_plot, state["current_bound_x"], state["current_bound_y"], color = :red, markersize=10)
+    scatter!(ref_spectra_plot, state["ref_points"], color=c1)
+    scatter!(ref_spectra_plot, state["bound_points"], color=c2)
+    scatter!(ref_spectra_plot, state["current_ref_x"], state["current_ref_y"], color = c4, markersize=12)
+    scatter!(ref_spectra_plot, state["current_bound_x"], state["current_bound_y"], color = c4, markersize=12)
 
     # on(slider_peaks.value) do n
     on(state["current_peak"]) do p
@@ -133,12 +126,12 @@ function gui(state)
         xpanlock=true,
         ypanlock=true,
         limits=(nothing, (-.1, 1.1)))
-    errorbars!(relaxation_plot, @lift($(state["reference_relaxation"]).tye))
-    errorbars!(relaxation_plot, @lift($(state["bound_relaxation"]).tye))
-    scatter!(relaxation_plot, @lift($(state["reference_relaxation"]).ty), label = "Reference")
-    scatter!(relaxation_plot, @lift($(state["bound_relaxation"]).ty), label = "Bound")
-    lines!(relaxation_plot, @lift($(state["reference_relaxation"]).typred))
-    lines!(relaxation_plot, @lift($(state["bound_relaxation"]).typred))
+    lines!(relaxation_plot, @lift($(state["reference_relaxation"]).typred), color=c1)
+    lines!(relaxation_plot, @lift($(state["bound_relaxation"]).typred), color=c2)
+    errorbars!(relaxation_plot, @lift($(state["reference_relaxation"]).tye), color=c1)
+    errorbars!(relaxation_plot, @lift($(state["bound_relaxation"]).tye), color=c2)
+    scatter!(relaxation_plot, @lift($(state["reference_relaxation"]).ty), label = "Reference", color=c1)
+    scatter!(relaxation_plot, @lift($(state["bound_relaxation"]).ty), label = "Bound", color=c2)
     axislegend(relaxation_plot)
     
 
@@ -190,7 +183,7 @@ function gui(state)
         colormap=state["heatmap_cm"],
         colorrange=state["heatmap_limits"])
     cb = Colorbar(bottom_panel[2,3], hm, label=state["heatmap_label"])
-    scatter!(ax_heatmap, state["heatmap_point"], color=:red, marker=:star5)
+    scatter!(ax_heatmap, state["heatmap_point"], color=c4, marker=:star5, markersize=12)
     # Event handler for heatmap click
     on(events(ax_heatmap).mousebutton) do event
         if event.button == Mouse.left && event.action == Mouse.release
