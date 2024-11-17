@@ -12,7 +12,7 @@ function gui(state)
     slider_peaks = top_panel[1,6] = Slider(fig, range = @lift(1:$(state["n_peaks"])))
     connect!(state["current_peak_number"], slider_peaks.value)
     info_label = top_panel[1,7] = Label(fig, state["labeltext"])
-    ax_structure = Axis(top_panel[1,8], aspect = DataAspect(), backgroundcolor = :white, height=80,
+    ax_structure = Axis(top_panel[1,8], aspect = DataAspect(), backgroundcolor = :white, height=120,
         xzoomlock=true,
         yzoomlock=true,
         xrectzoom=false,
@@ -54,8 +54,8 @@ function gui(state)
 
 
     # Middle panel
-    middle_panel = fig[2, 1] = GridLayout()
-    ref_spectra_plot = middle_panel[1,1] = Axis(fig,
+    # middle_panel = fig[2, 1] = GridLayout()
+    ref_spectra_plot = Axis(fig[2,1],
         xreversed=true,
         yzoomlock=true,
         ypanlock=true,
@@ -63,29 +63,29 @@ function gui(state)
         yrectzoom=false,
         xlabel="Chemical shift (ppm)",
         ylabel="Intensity",
-        title="Reference")
+        )
     hideydecorations!(ref_spectra_plot)
-    bound_spectra_plot = middle_panel[2,1] = Axis(fig,
-        xreversed=true,
-        yzoomlock=true,
-        ypanlock=true,
-        xrectzoom=true,
-        yrectzoom=false,
-        xlabel="Chemical shift (ppm)",
-        ylabel="Intensity",
-        title="Bound")
-    hideydecorations!(bound_spectra_plot)
-    linkaxes!(ref_spectra_plot, bound_spectra_plot)
+    # bound_spectra_plot = middle_panel[2,1] = Axis(fig,
+    #     xreversed=true,
+    #     yzoomlock=true,
+    #     ypanlock=true,
+    #     xrectzoom=true,
+    #     yrectzoom=false,
+    #     xlabel="Chemical shift (ppm)",
+    #     ylabel="Intensity",
+    #     title="Bound")
+    # hideydecorations!(bound_spectra_plot)
+    # linkaxes!(ref_spectra_plot, bound_spectra_plot)
 
     lines!(ref_spectra_plot, state["reference_plot"], label = "Reference")
-    lines!(bound_spectra_plot, state["bound_plot"], label = "Bound")
+    lines!(ref_spectra_plot, state["bound_plot"], label = "Bound")
 
     vlines!(ref_spectra_plot, state["library_shifts"], color=:orange, ymin=0.8)
     
-    scatter!(ref_spectra_plot, state["ref_points"], color=:black)
-    scatter!(bound_spectra_plot, state["bound_points"], color=:black)
+    scatter!(ref_spectra_plot, state["ref_points"])#, color=:black)
+    scatter!(ref_spectra_plot, state["bound_points"])#, color=:black)
     scatter!(ref_spectra_plot, state["current_ref_x"], state["current_ref_y"], color = :red, markersize=10)
-    scatter!(bound_spectra_plot, state["current_bound_x"], state["current_bound_y"], color = :red, markersize=10)
+    scatter!(ref_spectra_plot, state["current_bound_x"], state["current_bound_y"], color = :red, markersize=10)
 
     # on(slider_peaks.value) do n
     on(state["current_peak"]) do p
@@ -223,7 +223,9 @@ function gui(state)
         end
     end
 
-    colsize!(bottom_panel, 1, Relative(1/3))
+    colsize!(bottom_panel, 1, Relative(1/4))
+    # rowsize!(fig.layout, 1, Relative(1/4))
+    rowsize!(fig.layout, 2, Relative(1/3))
 
     fig
 end
