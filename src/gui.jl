@@ -224,6 +224,7 @@ function gui(state)
     # rowsize!(fig.layout, 1, Relative(1/4))
     rowsize!(fig.layout, 2, Relative(1/3))
 
+    state["fig"] = fig
     fig
 end
 

@@ -4,12 +4,24 @@ Functions for saving NMR screening data
 
 function write_results(state)
     od = state["config"].output_directory
-    if !isdir(od)
-        mkdir(od)
+    if isdir(od)
+        backup_od = od * "_previous"
+        if isdir(backup_od)
+            rm(backup_od; force=true, recursive=true)
+        end
+        mv(od, backup_od)
     end
+    mkdir(od)
+
+    # bgcolor = state["fig"].scene.backgroundcolor[]
+    # state["fig"].scene.backgroundcolor[] = RGBf(1,.85,.85)
     write_results_csv(joinpath(od, "results.csv"), state["cocktails"])
     write_heatmaps(state)
     write_peaks(state)
+
+    @info "Finished save"
+
+    # state["fig"].scene.backgroundcolor[] = bgcolor
 end
 
 """
@@ -153,7 +165,7 @@ function write_heatmaps(state)
 
     # Save the figure
     filename = joinpath(od, "reducedchi2.pdf")
-    @info "Saving csps heatmap to $filename"
+    @info "Saving reduced chi2 heatmap to $filename"
     Makie.save(filename, fig)
 
     # Switch back to GLMakie
@@ -216,6 +228,7 @@ function write_peak(peak, state)
 
     # Save the figure
     filename = joinpath(od, "$peak_id.pdf")
+    @info "Saving peak output to $filename"
     Makie.save(filename, fig)
 
     # Switch back to GLMakie
