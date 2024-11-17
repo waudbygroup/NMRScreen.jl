@@ -27,6 +27,9 @@ function gui(state)
     hidespines!(ax_structure)
     image!(ax_structure, state["structure"])
     save_button = top_panel[1,9] = Button(fig, label = "Save")
+    on(save_button.clicks) do _
+        write_results(state)
+    end
     colsize!(top_panel, 7, Relative(1/3))
 
     on(button_left.clicks) do _
@@ -171,6 +174,7 @@ function gui(state)
     ax_heatmap = bottom_panel[2,2] = Axis(fig,
         xlabel="Peak",
         ylabel="Cocktail",
+        yreversed=true,
         xzoomlock=true,
         yzoomlock=true,
         xrectzoom=false,

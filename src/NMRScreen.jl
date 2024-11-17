@@ -1,5 +1,6 @@
 module NMRScreen
 
+using CairoMakie
 using FileIO
 using GLMakie
 using LinearAlgebra
@@ -22,7 +23,7 @@ include("relaxation.jl")
 include("screeningpeaks.jl")
 include("smiles.jl")
 include("state.jl")
-# include("fileio.jl")
+include("save.jl")
 include("gui.jl")
 
 """
@@ -39,6 +40,7 @@ screen("experiment.toml")
 ```
 """
 function screen(experiment_toml::String)
+    GLMakie.activate!()
     config = parseconfig(experiment_toml)   # Load configuration
     library = parselibrary(config.library_filename)    # Load library definitions (fragments + cocktails)
     cocktails = loadcocktails(config, library)         # Load cocktail experimental data

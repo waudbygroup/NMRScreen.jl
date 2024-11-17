@@ -57,9 +57,6 @@ function parseconfig(filename)
         joinpath(wd, files["output_directory"]),
         cocktails
     )
-        
-    # Create output directory if it doesn't exist
-    mkpath(exptconfig.output_directory)
 
     return exptconfig
 end
