@@ -18,6 +18,7 @@ function write_results(state)
     write_results_csv(joinpath(od, "results.csv"), state["cocktails"])
     write_heatmaps(state)
     write_peaks(state)
+    write_top_fragments(state)
 
     @info "Finished save"
 
@@ -229,6 +230,50 @@ function write_peak(peak, state)
     # Save the figure
     filename = joinpath(od, "$peak_id.pdf")
     @info "Saving peak output to $filename"
+    Makie.save(filename, fig)
+
+    # Switch back to GLMakie
+    GLMakie.activate!()
+end
+
+
+function write_top_fragments(state, n=15)
+    od = state["config"].output_directory
+    
+    # Extract top n fragments by DeltaR2
+    peaks = [peak for cocktail in state["cocktails"] for peak in cocktail.peaks]
+    sorted_peaks = sort(peaks, by=(i->Measurements.value(DeltaR2(i))), rev=true)
+    top_peaks = sorted_peaks[1:n]
+
+    # Switch to CairoMakie
+    CairoMakie.activate!()
+
+    fig = Figure(size=(800,400))
+    ax = Axis(fig[1,1],
+        xlabel="ΔR₂ (s⁻¹)",
+        ylabel="Peak ID",
+        yreversed=true,
+        title="Top $n fragments by ΔR₂",
+        yticks=(1:n, [peak.peak_id for peak in top_peaks])
+    )
+
+    # Plot horizontal bars with error bars
+    barpositions = 1:n
+    barvalues = [Measurements.value(DeltaR2(peak)) for peak in top_peaks]
+    barerrors = [Measurements.uncertainty(DeltaR2(peak)) for peak in top_peaks]
+    errorbars!(ax, barvalues, barpositions, barerrors, direction=:x, color=:black, whiskerwidth=5)
+    barplot!(ax, barpositions, barvalues, direction=:x)#, color=Makie.wong_colors()[1])
+
+    ax2 = Axis(fig[1,2],
+        xlabel="ΔR₂ (s⁻¹)",
+        ylabel="Frequency",
+        title="Distribution of ΔR₂ values"
+    )
+    hist!(ax2, [Measurements.value(DeltaR2(peak)) for peak in peaks], bins=20)
+
+    # Save the figure
+    filename = joinpath(od, "top_fragments.pdf")
+    @info "Saving top fragments bar plot to $filename"
     Makie.save(filename, fig)
 
     # Switch back to GLMakie

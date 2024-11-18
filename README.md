@@ -8,7 +8,7 @@
 - [x] Test with multiple cocktails and different numbers of peaks
 - [ ] Sort peaks by chemical shift
 - [x] left/right buttons
-- [ ] summary plots (ranked R2 etc)
+- [x] summary plots (ranked R2)
 - [ ] click points on spectrum to highlight
-- [ ] save button
+- [x] save button
 - [ ] adjust peak positions
