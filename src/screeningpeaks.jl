@@ -9,7 +9,9 @@ function makescreeningpeaks(refspec, boundspec, cocktail_id, librarypeak_ids, li
     matched_ids = librarypeak_ids[[m[1] for m in matches]]
     # TODO include unrecognised peaks from refpeaks and give them 'unknown' labels
     missing_librarypeak_ids = librarypeak_ids[unmatched_expected]
-    @warn missing_librarypeak_ids
+    if length(missing_librarypeak_ids) > 0
+        @warn "library peaks unmatched in reference spectra" cocktail_id missing_librarypeak_ids
+    end
 
     # 2. match bound peaks to reference
     x_offset2, y_scale2, matches2, unmatched_expected2, unmatched_observed2 = rpm(matched_refpeaks, boundpeaks; intensity_weight=0.000)
@@ -18,7 +20,9 @@ function makescreeningpeaks(refspec, boundspec, cocktail_id, librarypeak_ids, li
     matched_librarypeaks2 = matched_librarypeaks[[m[1] for m in matches2], 1] |> vec
     matched_ids2 = matched_ids[[m[1] for m in matches2]]
     missing_refpeak_ids = matched_ids[unmatched_expected2]
-    @warn missing_refpeak_ids
+    if length(missing_refpeak_ids) > 0
+        @warn "reference peaks unmatched in bound spectra" cocktail_id missing_refpeak_ids
+    end
 
     # 3. create ScreeningPeak objects
     screeningpeaks = []

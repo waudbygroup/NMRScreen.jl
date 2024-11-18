@@ -73,7 +73,8 @@ function gui(state)
         )
     hideydecorations!(ref_spectra_plot)
 
-    vlines!(ref_spectra_plot, state["library_shifts"], color=c3, ymin=0.85, label="Library")
+    vlines!(ref_spectra_plot, state["library_shifts"], color=c3, ymin=0.9, label="Library")
+    vlines!(ref_spectra_plot, state["current_library_x"], color=c4, ymin=0.85, linewidth=3)
     lines!(ref_spectra_plot, state["reference_plot"], label = "Reference", color=c1)
     lines!(ref_spectra_plot, state["bound_plot"], label = "Bound", color=c2)
     axislegend(ref_spectra_plot)
@@ -220,11 +221,67 @@ function gui(state)
         end
     end
 
+    on(events(fig.scene).keyboardbutton) do event
+        if event.action == Keyboard.press || event.action == Keyboard.repeat
+            if event.key == Keyboard.left
+                i = state["current_cocktail_number"][]
+                j = state["current_peak_number"][]
+                if j > 1
+                    j -= 1
+                    set_close_to!(slider_peaks, j)
+                elseif i > 1
+                    i -= 1
+                    j = length(state["cocktails"][i].peaks)
+                    set_close_to!(slider_cocktails, i)
+                    set_close_to!(slider_peaks, j)
+                end
+            elseif event.key == Keyboard.right
+                i = state["current_cocktail_number"][]
+                j = state["current_peak_number"][]
+                if j < length(state["cocktails"][i].peaks)
+                    j += 1
+                    set_close_to!(slider_peaks, j)
+                elseif i < state["n_cocktails"]
+                    i += 1
+                    j = 1
+                    set_close_to!(slider_cocktails, i)
+                    set_close_to!(slider_peaks, j)
+                end
+            elseif event.key == Keyboard.down
+                i = state["current_cocktail_number"][]
+                if i < state["n_cocktails"]
+                    set_close_to!(slider_cocktails, i+1)
+                end
+            elseif event.key == Keyboard.up
+                i = state["current_cocktail_number"][]
+                if i > 1
+                    set_close_to!(slider_cocktails, i-1)
+                end
+            end
+        end
+    end
+
     colsize!(bottom_panel, 1, Relative(1/4))
     # rowsize!(fig.layout, 1, Relative(1/4))
     rowsize!(fig.layout, 2, Relative(1/3))
 
     state["fig"] = fig
+
+    showhelp()
     fig
 end
 
+
+function showhelp()
+    @info """
+# NMR Fragment Screening Analysis
+
+Shortcuts:
+- Left/Right arrow keys: Navigate between peaks
+- Up/Down arrow keys: Navigate between cocktails
+- Mouse wheel: Adjust heatmap scale / spectrum zoom level
+- Click on heatmap: Select peak
+- Control-click: reset zoom
+- Right-drag: pan spectrum
+    """
+end
