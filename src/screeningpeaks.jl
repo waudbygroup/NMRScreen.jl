@@ -33,7 +33,7 @@ function makescreeningpeaks(refspec, boundspec, cocktail_id, librarypeak_ids, li
         newpeak = ScreeningPeak(refspec, boundspec, peak_id, peak_id[1:end-1], cocktail_id, libpeak, refpeak, boundpeak)
         push!(screeningpeaks, newpeak)
     end
-    reverse!(screeningpeaks)
+    sort!(screeningpeaks, by=sp -> sp.reference_shift, rev=true)
 
     return screeningpeaks, missing_librarypeak_ids
 end
