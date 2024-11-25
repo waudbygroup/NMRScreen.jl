@@ -13,6 +13,10 @@ function loadcocktail(config, library, cocktail)
     # load the NMR data
     refspec = loadnmr(refspec_path)
     boundspec = loadnmr(boundspec_path)
+    if metadata(refspec, F1Dim, :window) ≠ metadata(boundspec, F1Dim, :window)
+        @warn "Mismatched spectral windows between reference and bound spectra" refspec_path boundspec_path metadata(refspec, F1Dim, :window) metadata(boundspec, F1Dim, :window)
+    end
+
     refspec = setrelaxtimes(refspec, acqus(refspec, :vdlist))
     boundspec = setrelaxtimes(boundspec, acqus(boundspec, :vdlist))
 
