@@ -17,13 +17,29 @@ function loadcocktail(config, library, cocktail)
     boundspec = setrelaxtimes(boundspec, acqus(boundspec, :vdlist))
 
     # get cocktail and fragment info from the library definitions
-    librarycocktail = library.cocktails[cocktail_id]
+    librarycocktail = try
+        library.cocktails[cocktail_id]
+    catch e
+        if e isa KeyError
+            error("Cocktail $cocktail_id was not found in library. Check the library cocktail definitions.")
+        else
+            rethrow()  # Re-throw any other unexpected errors
+        end
+    end
     cocktail_name = librarycocktail.name
     fragment_ids = librarycocktail.fragment_ids
 
     peaks = Vector{AbstractPeak}()
     for fragment_id in fragment_ids
-        fragment = library.fragments[fragment_id]
+        fragment = try
+            library.fragments[fragment_id]
+            catch e
+                if e isa KeyError
+                    error("Fragment $fragment_id was not found in library. Check the library fragment definitions.")
+                else
+                    rethrow()  # Re-throw any other unexpected errors
+                end
+            end
         fragment_smiles = fragment.smiles
         # fragment_concentration = fragment.concentration
         fragment_peak_ids = fragment.peak_ids

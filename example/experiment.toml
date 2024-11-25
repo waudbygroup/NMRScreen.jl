@@ -30,7 +30,6 @@ id = "C2" # ID must correspond to fragment library
 reference = "2"  # fragment-only control
 experiment = "102" # fragment + macromolecule experiment
 
-
 [[cocktails]]
 id = "C4" # ID must correspond to fragment library
 reference = "4"  # fragment-only control

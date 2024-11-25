@@ -19,7 +19,7 @@ macro nested_observable(outer, inner)
             catch
                 Float64[]  # fallback initial value
             end
-            @show try_initial
+            
             # Create the result Observable
             result = Observable(try_initial)
             
