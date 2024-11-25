@@ -1,4 +1,4 @@
-function gui(state)
+function gui!(state)
     fig = Figure(size = (1200, 800))
     c1 = Makie.wong_colors()[1]
     c2 = Makie.wong_colors()[2]
@@ -265,10 +265,17 @@ function gui(state)
     # rowsize!(fig.layout, 1, Relative(1/4))
     rowsize!(fig.layout, 2, Relative(1/3))
 
-    state["fig"] = fig
-
     showhelp()
-    fig
+
+    display(fig)
+    while !state["should_close"][]
+        sleep(0.1)
+        if !isopen(fig.scene)
+            break
+        end
+    end
+    
+    GLMakie.closeall()
 end
 
 

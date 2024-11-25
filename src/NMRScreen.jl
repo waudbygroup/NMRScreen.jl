@@ -12,19 +12,22 @@ using Peaks
 using TOML
 
 export screen
+export smilestoimage
 
 # Include other source files
 include("types.jl")
+using .Types
+
 include("config.jl")
 include("library.jl")
 include("cocktails.jl")
-include("registration.jl")
-include("relaxation.jl")
-include("screeningpeaks.jl")
 include("smiles.jl")
-include("state.jl")
-include("save.jl")
-include("gui.jl")
+include("registration/Registration.jl")
+include("relaxation/Relaxation.jl")
+
+using .Registration
+using .Relaxation
+
 
 """
     screen()
@@ -40,26 +43,18 @@ screen("experiment.toml")
 ```
 """
 function screen(experiment_toml::String)
-    GLMakie.activate!()
-    config = parseconfig(experiment_toml)   # Load configuration
-    library = parselibrary(config.library_filename)    # Load library definitions (fragments + cocktails)
-    cocktails = loadcocktails(config, library)         # Load cocktail experimental data
+    GLMakie.activate!(;float=true, focus_on_show=true, title="NMRScreen.jl")
+    config = parseconfig(experiment_toml)           # Load configuration
+    library = parselibrary(config)                  # Load library definitions (fragments + cocktails)
+    cocktails = loadcocktails(config, library)      # Load cocktail experimental data
 
-    state = initialisestate(config, library, cocktails)
-    # Initialize GUI
-    fig = gui(state)
-    
-    # Display and return figure for interactive use
-    # display(fig)
-    # return fig, state
-    wait(display(fig)) # wait to execute the following code until the window is closed
-    GLMakie.closeall()
+    cocktails = registration(config, library, cocktails)    # Start the registration analysis GUI
+                                                    # this returns cocktails with BasicPeaks
+    relaxation(config, library, cocktails)      # Start the relaxation analysis GUI
 end
 
-"""
-Entry point for command line usage.
-Following Julia 1.11 convention for standalone applications.
-"""
+
+"Entry point for command line usage."
 function (@main)(args)
     try
         # Check for command line arguments
@@ -70,9 +65,6 @@ function (@main)(args)
         
         # Run main function with provided configuration
         screen(args[1])
-        
-        # Keep the application running
-        GLMakie.wait_for_close()
         
         return 0
     catch

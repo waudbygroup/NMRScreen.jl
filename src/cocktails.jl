@@ -21,47 +21,33 @@ function loadcocktail(config, library, cocktail)
     cocktail_name = librarycocktail.name
     fragment_ids = librarycocktail.fragment_ids
 
-    libraryfragments = [library.fragments[id] for id in fragment_ids]
-    librarypeak_ids, librarypeaks = getlibrarypeaks(libraryfragments)
-
-    refpeaks = detectpeaks(refspec)
-    boundpeaks = detectpeaks(boundspec)
-
-    screeningpeaks, missingpeaks = makescreeningpeaks(refspec, boundspec, cocktail_id, librarypeak_ids, librarypeaks, refpeaks, boundpeaks)
-
-    Cocktail(cocktail_id, cocktail_name, fragment_ids, refspec, boundspec, screeningpeaks, missingpeaks)
-end
-
-
-function getlibrarypeaks(libraryfragments)
-    # return list of peaks for all fragments
-    # generate peak ids based on fragment ids + alphabetical tag (a, b, c...)
-    librarypeak_ids = Vector{String}()
-    librarypeaks = [] # TODO typing?
-
-    for fragment in libraryfragments
-        fragid = fragment.id
-        for (i, peak) in enumerate(eachrow(fragment.peaks))
-            id = fragid * ('a' + i - 1)
-            push!(librarypeak_ids, id)
-            push!(librarypeaks, peak)
+    peaks = Vector{AbstractPeak}()
+    for fragment_id in fragment_ids
+        fragment = library.fragments[fragment_id]
+        fragment_smiles = fragment.smiles
+        # fragment_concentration = fragment.concentration
+        fragment_peak_ids = fragment.peak_ids
+        fragment_peak_shifts = fragment.peak_shifts
+        # fragment_peak_heights = fragment.peak_heights
+        for i=1:length(fragment_peak_ids)
+            peak_id = fragment_peak_ids[i]
+            library_shift = fragment_peak_shifts[i]
+            push!(peaks, LibraryPeak(peak_id,
+                refspec,
+                boundspec,
+                fragment_id,
+                cocktail_id,
+                fragment_smiles,
+                library_shift))
         end
     end
-    librarypeaks = librarypeaks |> stack |> transpose |> collect
 
-    return librarypeak_ids, librarypeaks
+    sort!(peaks, by=x->x.library_shift, rev=true)
+
+    Cocktail(cocktail_id, cocktail_name, fragment_ids, refspec, boundspec, peaks)
 end
 
 
-function detectpeaks(spec, snr_threshold=8)
-    x = data(spec, F1Dim)
-    y = data(spec[:,1]) / spec[:noise]
-
-    pks = findmaxima(y)     # detect peaks
-    peakheights!(pks; min=snr_threshold) # filter list
-
-    peak_shifts = x[pks.indices]
-    peak_heights = y[pks.indices]
-    
-    [peak_shifts peak_heights] # return matrix of peaks
+function Base.show(io::IO, cocktail::Cocktail)
+    print(io, "Cocktail ", cocktail.id, ", Fragments: ", length(cocktail.fragment_ids), ", Peaks: ", length(cocktail.peaks))
 end

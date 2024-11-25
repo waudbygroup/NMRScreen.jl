@@ -84,6 +84,8 @@ function addguistuff!(state)
     state["heatmap_point"] = lift(state["current_peak_number"], state["current_cocktail_number"]) do i, j
         Point2f(i, j)
     end
+
+    state["should_close"] = Observable(false)
 end
 
 function refR2s(state)

@@ -1,6 +1,17 @@
 """
 Core data types for NMR fragment screening analysis
 """
+module Types
+
+export Experiment
+export ExperimentConfig
+export Library
+export LibraryFragment
+export LibraryCocktail
+export Cocktail
+export AbstractPeak
+export BasicPeak
+export LibraryPeak
 
 struct Experiment
     config
@@ -26,10 +37,12 @@ end
 
 
 struct LibraryFragment
-    id
+    fragment_id
     smiles
     concentration
-    peaks
+    peak_ids
+    peak_shifts
+    peak_heights
 end
 
 struct LibraryCocktail
@@ -44,74 +57,49 @@ struct Library
     cocktails::Dict{String,LibraryCocktail}
 end
 
+abstract type AbstractPeak end
+
+struct LibraryPeak <: AbstractPeak
+    id
+    refspec
+    boundspec
+    fragment_id
+    cocktail_id
+    smiles
+    library_shift
+end
+function Base.show(io::IO, peak::LibraryPeak)
+    print(io, "LibraryPeak ", peak.id, ", Cocktail: ", peak.cocktail_id, ", Library Shift (ppm): ", peak.library_shift)
+end
+
+struct BasicPeak <: AbstractPeak
+    id
+    refspec
+    boundspec
+    # fragment_id
+    cocktail_id
+    smiles
+    library_shift
+    ref_shift
+    bound_shift
+    # good::Bool
+end
+function Base.show(io::IO, peak::BasicPeak)
+    print(io, "BasicPeak ", peak.id,
+        ", Cocktail: ", peak.cocktail_id,
+        ", Library Shift (ppm): ", peak.library_shift,
+        ", Ref. Shift (ppm): ", peak.ref_shift,
+        ", Bound Shift (ppm): ", peak.bound_shift,
+        ", Good: ", peak.good)
+end
 
 struct Cocktail
     id
     name
-    fragments
+    fragment_ids
     refspec
     boundspec
-    peaks
-    missingpeaks
+    peaks::Vector{AbstractPeak}
 end
 
-
-"""
-    RelaxationResult
-
-Results from relaxation analysis of a peak.
-
-# Fields
-- `R2`: R2 relaxation rate (s⁻¹)
-- `R2_error`: Error in R2
-- `I0`: Initial intensity
-- `I0_error`: Error in I0
-"""
-struct RelaxationResult
-    R2
-    R2_error
-    I0
-    I0_error
-    ty
-    tye
-    typred
-    reducedchi2
-end
-
-"""
-    ScreeningResult
-
-Complete analysis results for a single peak.
-
-# Fields
-- `fragment_id`: Fragment identifier
-- `peak_number`: Peak number within fragment
-- `cocktail_id`: Cocktail identifier
-- `library_shift`: Expected chemical shift
-- `reference_shift`: Measured shift without protein
-- `bound_shift`: Measured shift with protein
-- `reference_intensity`: Reference peak intensity (-protein)
-- `reference_intensity_error`: Error in reference intensity
-- `bound_intensity`: bound peak intensity (-protein)
-- `bound_intensity_error`: Error in bound intensity
-- `reference_relaxation`: Relaxation analysis without protein
-- `bound_relaxation`: Relaxation analysis with protein
-"""
-struct ScreeningPeak
-    # NB constructor is in screeningpeaks.jl
-    # fragment_id
-    refspec
-    boundspec
-    peak_id
-    fragment_id
-    cocktail_id
-    library_shift
-    reference_shift
-    bound_shift
-    reference_intensity
-    reference_intensity_error
-    bound_intensity
-    bound_intensity_error
-    reference_relaxation
-    bound_relaxation
 end

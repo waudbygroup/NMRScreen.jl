@@ -1,4 +1,5 @@
-function parselibrary(library_filename)
+function parselibrary(config)
+    library_filename = config.library_filename
     config = TOML.parsefile(library_filename)
     wd = dirname(library_filename)
 
@@ -19,17 +20,19 @@ function parsefragments(fragments_filename)
     # populate dictionary keyed with cocktail ids
     fragments = Dict{String,LibraryFragment}()
     for fields in fragment_data
-        id = fields[1]
+        fragment_id = fields[1]
         smiles = fields[2]
         conc = parse(Float64, fields[3])
-        peaks = parse.(Float64, fields[4:2:end])
+        shifts = parse.(Float64, fields[4:2:end])
         peakheights = parse.(Float64, fields[5:2:end])
-        peaks = [peaks peakheights]
-        fragment = LibraryFragment(id, smiles, conc, peaks)
-        push!(fragments, id => fragment)
+        peak_ids = map(1:length(shifts)) do i
+            fragment_id * ('a' + i - 1)
+        end
+        fragment = LibraryFragment(fragment_id, smiles, conc, peak_ids, shifts, peakheights)
+        push!(fragments, fragment_id => fragment)
     end
 
-    fragments
+    return fragments
 end
 
 
@@ -46,7 +49,7 @@ function parsecocktails(filename)
         push!(cocktails, id => cocktail)
     end
 
-    cocktails
+    return cocktails
 end
 
 
@@ -62,5 +65,5 @@ function parsecsv(filename::String)
         end
     end
     
-    result
+    return result
 end

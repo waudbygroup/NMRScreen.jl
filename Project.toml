@@ -1,7 +1,7 @@
 name = "NMRScreen"
 uuid = "e6af4f88-7701-4df4-8af7-4e9c6957a0a0"
 authors = ["Chris Waudby <c.waudby@ucl.ac.uk> and contributors"]
-version = "0.0.1"
+version = "0.0.2"
 
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
