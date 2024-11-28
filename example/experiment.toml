@@ -30,7 +30,80 @@ id = "C2" # ID must correspond to fragment library
 reference = "2"  # fragment-only control
 experiment = "102" # fragment + macromolecule experiment
 
+
+[[cocktails]]
+id = "C3" # ID must correspond to fragment library
+reference = "3"  # fragment-only control
+experiment = "103" # fragment + macromolecule experiment
+
+
 [[cocktails]]
 id = "C4" # ID must correspond to fragment library
 reference = "4"  # fragment-only control
 experiment = "104" # fragment + macromolecule experiment
+
+
+[[cocktails]]
+id = "C5" # ID must correspond to fragment library
+reference = "5"  # fragment-only control
+experiment = "105" # fragment + macromolecule experiment
+
+
+[[cocktails]]
+id = "C6" # ID must correspond to fragment library
+reference = "6"  # fragment-only control
+experiment = "106" # fragment + macromolecule experiment
+
+
+[[cocktails]]
+id = "C7" # ID must correspond to fragment library
+reference = "7"  # fragment-only control
+experiment = "107" # fragment + macromolecule experiment
+
+
+[[cocktails]]
+id = "C8" # ID must correspond to fragment library
+reference = "8"  # fragment-only control
+experiment = "108" # fragment + macromolecule experiment
+
+
+[[cocktails]]
+id = "C9" # ID must correspond to fragment library
+reference = "9"  # fragment-only control
+experiment = "109" # fragment + macromolecule experiment
+
+
+[[cocktails]]
+id = "C10" # ID must correspond to fragment library
+reference = "10"  # fragment-only control
+experiment = "110" # fragment + macromolecule experiment
+
+
+[[cocktails]]
+id = "C11" # ID must correspond to fragment library
+reference = "11"  # fragment-only control
+experiment = "111" # fragment + macromolecule experiment
+
+
+[[cocktails]]
+id = "C12" # ID must correspond to fragment library
+reference = "12"  # fragment-only control
+experiment = "112" # fragment + macromolecule experiment
+
+
+[[cocktails]]
+id = "C13" # ID must correspond to fragment library
+reference = "13"  # fragment-only control
+experiment = "113" # fragment + macromolecule experiment
+
+
+[[cocktails]]
+id = "C14" # ID must correspond to fragment library
+reference = "14"  # fragment-only control
+experiment = "114" # fragment + macromolecule experiment
+
+
+[[cocktails]]
+id = "C15" # ID must correspond to fragment library
+reference = "15"  # fragment-only control
+experiment = "115" # fragment + macromolecule experiment
