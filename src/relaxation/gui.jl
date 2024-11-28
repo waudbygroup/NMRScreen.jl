@@ -182,6 +182,7 @@ function gui!(state)
         yrectzoom=false,
         xpanlock=true,
         ypanlock=true,
+        backgroundcolor=:grey10,
         yticks=(1:state["n_cocktails"], state["cocktail_ids"])
         )
     hm = heatmap!(ax_heatmap, state["heatmap_data"],
@@ -263,7 +264,7 @@ function gui!(state)
 
     colsize!(bottom_panel, 1, Relative(1/4))
     # rowsize!(fig.layout, 1, Relative(1/4))
-    rowsize!(fig.layout, 2, Relative(1/3))
+    rowsize!(fig.layout, 2, Relative(0.28))
 
     showhelp()
 
