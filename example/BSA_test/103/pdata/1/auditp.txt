@@ -1,0 +1,75 @@
+##TITLE= Audit trail, TopSpin 4.4.0
+##JCAMPDX= 5.01
+##ORIGIN= Bruker BioSpin GmbH & Co. KG
+##OWNER= nmrsu
+$$ /opt/nmrdata-manual/data/admins/nmr/nikita_19Ffragment_C3_BSA_241111/12/pdata/1/auditp.txt
+##AUDIT TRAIL=  $$ (NUMBER, WHEN, WHO, WHERE, PROCESS, VERSION, WHAT)
+(   1,<2024-11-11T18:35:08.725+0000>,<nmrsu>,<localhost>,<go4>,<TopSpin 4.4.0>,
+      <acquisition in progress>)
+$$ /opt/nmrdata-manual/data/admins/nmr/nikita_19Ffragment_C3_BSA_241111/12/audita.txt
+(   2,<2024-11-11T19:17:13.410+0000>,<nmrsu>,<localhost>,<go4>,<TopSpin 4.4.0>,
+      <created by zg on 'AV NEO 600' (localhost) by user 'nmrsu'
+       on data set with UUID 'ad731fc8-a05b-11ef-8a09-0030d62dd8c2'
+       started at 2024-11-11 18:35:08.725 +0000, POWCHK enabled, PULCHK disabled,
+       completed at 2024-11-11 19:17:13.409 +0000
+       configuration hash MD5:
+       67 16 A1 F6 73 49 13 43 3A D4 2A 0D B3 9A A4 0B
+       double data hash MD5: 256K * 12
+       8A 6B 45 D7 3C B1 0B 64 0E BD AA 5C 74 09 65 67>)
+(   3,<2024-11-11T19:17:18.597+0000>,<nmrsu>,<localhost.localdomain>,<xwish3>,<TopSpin 4.4.0>,
+      <ICON-NMR User ID: admins
+       double data hash MD5: 256K * 12
+       8A 6B 45 D7 3C B1 0B 64 0E BD AA 5C 74 09 65 67>)
+(   4,<2024-11-11T19:17:19.739+0000>,<nmrsu/admins>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 same F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       data hash MD5: 512K * 16
+       7E F3 21 D2 0C A8 FE 5B CB A7 A7 AB 76 C8 F4 ED>)
+$$ /opt/nmrdata-manual/data/admins/nmr/nikita_19Ffragment_C3_BSA_241111/12/pdata/1/auditp.txt
+(   5,<2024-11-11T19:17:19.800+0000>,<nmrsu/admins>,<localhost.localdomain>,<xwish3>,<TopSpin 4.4.0>,
+      <ICON-NMR User ID: admins
+       data hash MD5: 512K * 16
+       7E F3 21 D2 0C A8 FE 5B CB A7 A7 AB 76 C8 F4 ED>)
+$$ C:/NMRScreen.jl-practice/example/BSA_test/103/pdata/1/auditp.txt
+(   6,<2024-11-27T15:05:44.385+0000>,<meshe>,<LAPTOP-US2RTH09>,<cprserver>,<TopSpin 4.4.1>,
+      <changed parameter F2 LB to 3.00>)
+(   7,<2024-11-27T15:05:47.245+0000>,<meshe>,<LAPTOP-US2RTH09>,<proc2d>,<TopSpin 4.4.1>,
+      <Start of raw data processing
+       xf2 F2: SI = 512K WDW = 1 LB = 3 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       fid double data hash MD5: 256K * 12
+       8A 6B 45 D7 3C B1 0B 64 0E BD AA 5C 74 09 65 67
+       data hash MD5: 512K * 16
+       F5 2F E1 27 3D E8 8D 1A A8 C8 0F 70 C6 25 58 AD>)
+(   8,<2024-11-27T15:06:05.363+0000>,<meshe>,<LAPTOP-US2RTH09>,<cprserver>,<TopSpin 4.4.1>,
+      <changed parameter F2 SI to 32768>)
+(   9,<2024-11-27T15:06:06.304+0000>,<meshe>,<LAPTOP-US2RTH09>,<proc2d>,<TopSpin 4.4.1>,
+      <Start of raw data processing
+       xf2 F2: SI = 32K WDW = 1 LB = 3 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       fid double data hash MD5: 256K * 12
+       8A 6B 45 D7 3C B1 0B 64 0E BD AA 5C 74 09 65 67
+       data hash MD5: 32K * 16
+       7B 2D 4A 9D B7 87 1E 37 97 D1 6A FD E9 3D 30 8E>)
+(  10,<2024-11-27T15:08:13.960+0000>,<meshe>,<LAPTOP-US2RTH09>,<cprserver>,<TopSpin 4.4.1>,
+      <changed parameter F2 LB to 10.00>)
+(  11,<2024-11-27T15:08:14.991+0000>,<meshe>,<LAPTOP-US2RTH09>,<proc2d>,<TopSpin 4.4.1>,
+      <Start of raw data processing
+       xf2 F2: SI = 32K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       fid double data hash MD5: 256K * 12
+       8A 6B 45 D7 3C B1 0B 64 0E BD AA 5C 74 09 65 67
+       data hash MD5: 32K * 16
+       F3 3C F2 58 8E 74 2D 13 24 48 DF 59 84 E4 4F A5>)
+(  12,<2024-11-27T15:08:54.683+0000>,<meshe>,<LAPTOP-US2RTH09>,<cprserver>,<TopSpin 4.4.1>,
+      <changed parameter F2 SI to 524288>)
+(  13,<2024-11-27T15:09:17.578+0000>,<meshe>,<LAPTOP-US2RTH09>,<cprserver>,<TopSpin 4.4.1>,
+      <changed parameter F2 SI to 32768>)
+(  14,<2024-11-27T15:09:33.752+0000>,<meshe>,<LAPTOP-US2RTH09>,<proc2d>,<TopSpin 4.4.1>,
+      <Start of raw data processing
+       xf2 F2: SI = 32K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       fid double data hash MD5: 256K * 12
+       8A 6B 45 D7 3C B1 0B 64 0E BD AA 5C 74 09 65 67
+       data hash MD5: 32K * 16
+       F3 3C F2 58 8E 74 2D 13 24 48 DF 59 84 E4 4F A5>)
+##END=
+
+$$ hash MD5
+$$ 2C 82 9F 1C 7B 20 7D 9A 17 65 3C A8 A3 77 AE 87
