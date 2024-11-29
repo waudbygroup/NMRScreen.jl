@@ -1,0 +1,26 @@
+##TITLE= Audit trail, TopSpin 4.4.0
+##JCAMPDX= 5.01
+##ORIGIN= Bruker BioSpin GmbH & Co. KG
+##OWNER= root
+$$ /root/.topspin-BladeEpu/local_acqu/nikita_19Ffragment_cocktailreruns_241107/102/audita.txt
+##AUDIT TRAIL=  $$ (NUMBER, WHEN, WHO, WHERE, PROCESS, VERSION, WHAT)
+(   1,<2024-11-07T22:46:01.435+0000>,<nmrsu>,<localhost>,<go4>,<TopSpin 4.4.0>,
+      <acquisition in progress>)
+$$ /opt/nmrdata-manual/data/admins/nmr/nikita_19Ffragment_cocktailreruns_241107/102/audita.txt
+(   2,<2024-11-07T23:32:18.434+0000>,<nmrsu>,<localhost>,<go4>,<TopSpin 4.4.0>,
+      <created by zg on 'AV NEO 600' (localhost) by user 'nmrsu'
+       on data set with UUID '0fea3970-9d5a-11ef-b405-0030d62dd8c2'
+       started at 2024-11-07 22:46:01.434 +0000, POWCHK enabled, PULCHK disabled,
+       completed at 2024-11-07 23:32:18.433 +0000
+       configuration hash MD5:
+       67 16 A1 F6 73 49 13 43 3A D4 2A 0D B3 9A A4 0B
+       double data hash MD5: 256K * 51
+       D6 5D 35 83 DB A5 2E 66 0B 4B 8C 5F A0 F0 58 46>)
+(   3,<2024-11-07T23:32:22.889+0000>,<nmrsu>,<localhost.localdomain>,<xwish3>,<TopSpin 4.4.0>,
+      <ICON-NMR User ID: admins
+       double data hash MD5: 256K * 51
+       D6 5D 35 83 DB A5 2E 66 0B 4B 8C 5F A0 F0 58 46>)
+##END=
+
+$$ hash MD5
+$$ D1 B9 BD DF 80 8E 02 BA 31 34 FF 51 91 75 AA 5D

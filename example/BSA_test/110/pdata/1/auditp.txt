@@ -1,0 +1,46 @@
+##TITLE= Audit trail, TopSpin 4.4.0
+##JCAMPDX= 5.01
+##ORIGIN= Bruker BioSpin GmbH & Co. KG
+##OWNER= nmrsu
+$$ /opt/nmrdata-manual/data/admins/nmr/nikita_19Ffragment_C10_BSA_241111/12/pdata/1/auditp.txt
+##AUDIT TRAIL=  $$ (NUMBER, WHEN, WHO, WHERE, PROCESS, VERSION, WHAT)
+(   1,<2024-11-12T01:35:27.937+0000>,<nmrsu>,<localhost>,<go4>,<TopSpin 4.4.0>,
+      <acquisition in progress>)
+$$ /opt/nmrdata-manual/data/admins/nmr/nikita_19Ffragment_C10_BSA_241111/12/audita.txt
+(   2,<2024-11-12T02:17:32.705+0000>,<nmrsu>,<localhost>,<go4>,<TopSpin 4.4.0>,
+      <created by zg on 'AV NEO 600' (localhost) by user 'nmrsu'
+       on data set with UUID '6548519c-a096-11ef-b866-0030d62dd8c2'
+       started at 2024-11-12 01:35:27.937 +0000, POWCHK enabled, PULCHK disabled,
+       completed at 2024-11-12 02:17:32.704 +0000
+       configuration hash MD5:
+       67 16 A1 F6 73 49 13 43 3A D4 2A 0D B3 9A A4 0B
+       double data hash MD5: 256K * 12
+       79 07 A3 CF 09 03 08 8E F1 41 8C 12 23 5D 73 CF>)
+(   3,<2024-11-12T02:17:37.982+0000>,<nmrsu>,<localhost.localdomain>,<xwish3>,<TopSpin 4.4.0>,
+      <ICON-NMR User ID: admins
+       double data hash MD5: 256K * 12
+       79 07 A3 CF 09 03 08 8E F1 41 8C 12 23 5D 73 CF>)
+(   4,<2024-11-12T02:17:39.186+0000>,<nmrsu/admins>,<localhost.localdomain>,<proc2d>,<TopSpin 4.4.0>,
+      <Start of raw data processing
+       xf2 same F2: SI = 512K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       data hash MD5: 512K * 16
+       65 56 8E 3D 8C 9B A3 32 95 8B CC 34 8A 4C 44 7D>)
+$$ /opt/nmrdata-manual/data/admins/nmr/nikita_19Ffragment_C10_BSA_241111/12/pdata/1/auditp.txt
+(   5,<2024-11-12T02:17:39.260+0000>,<nmrsu/admins>,<localhost.localdomain>,<xwish3>,<TopSpin 4.4.0>,
+      <ICON-NMR User ID: admins
+       data hash MD5: 512K * 16
+       65 56 8E 3D 8C 9B A3 32 95 8B CC 34 8A 4C 44 7D>)
+$$ C:/NMRScreen.jl-practice/example/BSA_test/110/pdata/1/auditp.txt
+(   6,<2024-11-27T15:56:31.646+0000>,<meshe>,<LAPTOP-US2RTH09>,<cprserver>,<TopSpin 4.4.1>,
+      <changed parameter F2 SI to 32768>)
+(   7,<2024-11-27T15:56:35.742+0000>,<meshe>,<LAPTOP-US2RTH09>,<proc2d>,<TopSpin 4.4.1>,
+      <Start of raw data processing
+       xf2 F2: SI = 32K WDW = 1 LB = 10 FT_mod = 6 PKNL = 1 PHC0 = -477.2381 PHC1 = 0 F1: SI = 16
+       fid double data hash MD5: 256K * 12
+       79 07 A3 CF 09 03 08 8E F1 41 8C 12 23 5D 73 CF
+       data hash MD5: 32K * 16
+       47 2F 29 EA BA FD B7 79 F1 3B 27 B6 75 EE 48 55>)
+##END=
+
+$$ hash MD5
+$$ 12 08 B7 9A 08 E1 3C EB C0 D7 84 C4 56 B2 B4 47

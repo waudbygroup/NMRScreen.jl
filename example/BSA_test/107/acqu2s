@@ -1,0 +1,24 @@
+##TITLE= Parameter file, TopSpin 4.4.0
+##JCAMPDX= 5.0
+##DATATYPE= Parameter Values
+##NPOINTS= 15	$$ modification sequence number
+##ORIGIN= Bruker BioSpin GmbH & Co. KG
+##OWNER= nmrsu
+$$ 2024-11-11 23:17:04.693 +0000  nmrsu@localhost.localdomain
+$$ /opt/nmrdata-manual/data/admins/nmr/nikita_19Ffragment_C7_BSA_241111/12/acqu2s
+$$ process /opt/topspin4.4.0/prog/mod/acqdataserver
+##$ACQT0= 0
+##$BF1= 600.4
+##$FnILOOP= 1
+##$FnMODE= 1
+##$NUC1= <1H>
+##$NusJSP= 0
+##$NusT2= 1
+##$NusTD= 12
+##$O1= 2821.88
+##$ProjAngle= 0
+##$SFO1= 600.40282188
+##$SW= 9.79734392779412
+##$SW_h= 5882.35294117647
+##$TD= 12
+##END=

@@ -1,0 +1,29 @@
+/*** ^^A -*-C++-*- **********************************************/
+/*	au_zgonly		08.04.1998			*/
+/****************************************************************/
+/*	Short Description :					*/
+/*	General AU program for data acquisition.		*/
+/****************************************************************/
+/*	Keywords :						*/
+/*	zg, gradshim, gradient shimming				*/
+/****************************************************************/
+/*	Description/Usage :					*/
+/*	General AU program for data acquisition. No rga is	*/
+/*	done, only zg. This AU program is used by the gradient	*/
+/*	shimming interface 'gradshim'.				*/
+/****************************************************************/
+/*	Author(s) :						*/
+/*	Name		: Mike Engelhardt 			*/
+/*	Organisation	: Bruker Analytik			*/
+/*	Email		: michael.engelhardt@bruker.de		*/
+/****************************************************************/
+/*	Name		Date	Modification:			*/
+/*	eng		980408	created				*/
+/****************************************************************/
+/*
+$Id:$
+*/
+
+GETCURDATA
+ZG
+QUIT
