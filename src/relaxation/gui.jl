@@ -113,6 +113,11 @@ function gui!(state)
         end
         xlims!(ref_spectra_plot, (nx2, nx1))
     end
+    on(state["reference_plot"]) do spec
+        # reset y limits
+        mn,mx = extrema([p[2] for p in spec])
+        ylims!(ref_spectra_plot, (-0.1mx, 1.1mx))
+    end
 
 
     # Bottom-left panel

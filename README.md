@@ -40,5 +40,5 @@ screen("example/experiment.toml")
 - [ ] click points on spectrum to highlight
 - [x] save button
 - [x] adjust peak positions
-- [ ] align spectra before calculating CSPs
-- [ ] fix scaling of spectra maxima
+- [x] align spectra before calculating CSPs
+- [x] fix scaling of spectra maxima

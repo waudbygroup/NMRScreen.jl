@@ -188,6 +188,11 @@ function gui!(state)
         end
         xlims!(spectra_plot, (nx2, nx1))
     end
+    on(state["reference_plot"]) do spec
+        # reset y limits
+        mn,mx = extrema([p[2] for p in spec])
+        ylims!(spectra_plot, (-0.1mx, 1.1mx))
+    end
     on(events(fig.scene).keyboardbutton) do event
         if event.action == Keyboard.press || event.action == Keyboard.repeat
             if event.key == Keyboard.left
