@@ -86,6 +86,79 @@ function gui!(state)
     scatter!(spectra_plot, state["bound_points"], color=c2, markersize=12)
     scatter!(spectra_plot, state["current_points"], markersize=15, color=state["current_color"])
 
+
+    # Bottom panel
+    bottom_panel = fig[3,1] = GridLayout()
+
+    ax_heatmap1 = bottom_panel[1,1] = Axis(fig,
+        xlabel="Peak",
+        ylabel="Cocktail",
+        yreversed=true,
+        xzoomlock=true,
+        yzoomlock=true,
+        xrectzoom=false,
+        yrectzoom=false,
+        xpanlock=true,
+        ypanlock=true,
+        backgroundcolor=:grey10,
+        title="Reference vs library peak positions",
+        yticks=(1:state["n_cocktails"], state["cocktail_ids"])
+        )
+    hm1 = heatmap!(ax_heatmap1, state["heatmap_csps1"],
+        colorrange=lift(z->(0, maximum(filter(!isnan, z))), state["heatmap_csps1"]))
+    cb = Colorbar(bottom_panel[1,2], hm1, label="Chemical shift difference (ppm)")
+    scatter!(ax_heatmap1, state["heatmap_point"], color=c4, marker=:star5, markersize=12)
+
+    ax_heatmap2 = bottom_panel[1,3] = Axis(fig,
+        xlabel="Peak",
+        ylabel="Cocktail",
+        yreversed=true,
+        xzoomlock=true,
+        yzoomlock=true,
+        xrectzoom=false,
+        yrectzoom=false,
+        xpanlock=true,
+        ypanlock=true,
+        backgroundcolor=:grey10,
+        title="Bound vs reference peak positions",
+        yticks=(1:state["n_cocktails"], state["cocktail_ids"])
+        )
+        
+    hm2 = heatmap!(ax_heatmap2, state["heatmap_csps2"],
+        colorrange=lift(z->(0, maximum(filter(!isnan, z))), state["heatmap_csps2"]))
+    cb = Colorbar(bottom_panel[1,4], hm2, label="Chemical shift difference (ppm)")
+    scatter!(ax_heatmap2, state["heatmap_point"], color=c4, marker=:star5, markersize=12)
+    # Event handler for heatmap click
+    on(events(ax_heatmap1).mousebutton) do event
+        if event.button == Mouse.left && event.action == Mouse.release
+            plt, i = pick(fig)
+            plt == hm1 || return
+            i > 0 || return
+            idx = CartesianIndices(state["heatmap_csps1"][])[i]
+            peak_idx = idx[1]
+            cocktail_idx = idx[2]
+            if peak_idx <= length(state["cocktails"][cocktail_idx].peak_ids)
+                set_close_to!(slider_cocktails, cocktail_idx)
+                set_close_to!(slider_peaks, peak_idx)
+            end
+        end
+    end
+    on(events(ax_heatmap2).mousebutton) do event
+        if event.button == Mouse.left && event.action == Mouse.release
+            plt, i = pick(fig)
+            plt == hm2 || return
+            i > 0 || return
+            idx = CartesianIndices(state["heatmap_csps2"][])[i]
+            peak_idx = idx[1]
+            cocktail_idx = idx[2]
+            if peak_idx <= length(state["cocktails"][cocktail_idx].peak_ids)
+                set_close_to!(slider_cocktails, cocktail_idx)
+                set_close_to!(slider_peaks, peak_idx)
+            end
+        end
+    end
+
+
     # on(slider_peaks.value) do n
     on(state["current_ref_x"]) do x
         xl1, xl2 = spectra_plot.xaxis.attributes.limits[]
@@ -180,18 +253,22 @@ end
 function nudge_ref_left!(state)
     state["ref_x"][][state["current_peak_number"][]] += state["reference_dx"][]
     notify(state["ref_x"])
+    updateheatmaps!(state)
 end
 function nudge_ref_right!(state)
     state["ref_x"][][state["current_peak_number"][]] -= state["reference_dx"][]
     notify(state["ref_x"])
+    updateheatmaps!(state)
 end
 function nudge_bound_left!(state)
     state["bound_x"][][state["current_peak_number"][]] += state["bound_dx"][]
     notify(state["bound_x"])
+    updateheatmaps!(state)
 end
 function nudge_bound_right!(state)
     state["bound_x"][][state["current_peak_number"][]] -= state["bound_dx"][]
     notify(state["bound_x"])
+    updateheatmaps!(state)
 end
 
 function left!(state)

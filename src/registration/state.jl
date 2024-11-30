@@ -9,7 +9,7 @@ function initialisestate(config, library, regcocktails)
     state["current_cocktail_number"] = Observable(1)
     state["current_cocktail"] = lift(i->state["cocktails"][i], state["current_cocktail_number"])
 
-    # state["max_peaks"] = maximum([length(cocktail.ids) for cocktail in cocktails])
+    state["max_peaks"] = maximum([length(cocktail.peak_ids) for cocktail in regcocktails])
     state["n_peaks"] = lift(i -> length(i.peak_ids), state["current_cocktail"])
     state["current_peak_number"] = Observable(1)
 
@@ -78,8 +78,35 @@ function initialisestate(config, library, regcocktails)
     state["structure"] = lift(i -> smilestoimage(i), state["current_smiles"])
 
     state["should_close"] = Observable(false)
-    
+
+    state["heatmap_csps1"] = Observable(zeros(state["max_peaks"], state["n_cocktails"]))
+    state["heatmap_csps2"] = Observable(zeros(state["max_peaks"], state["n_cocktails"]))
+    updateheatmaps!(state)
+    state["heatmap_point"] = lift(state["current_peak_number"], state["current_cocktail_number"]) do i, j
+        Point2f(i, j)
+    end
+
     return state
 end
 
 
+function updateheatmaps!(state)
+    heatmap_csps1 = state["heatmap_csps1"][] # library - reference
+    heatmap_csps2 = state["heatmap_csps2"][] # reference - bound
+    for i in 1:state["n_cocktails"]
+        for j in 1:state["max_peaks"]
+            if j > length(state["cocktails"][i].peak_ids)
+                heatmap_csps1[j, i] = NaN
+                heatmap_csps2[j, i] = NaN
+                continue
+            end
+            libx = state["cocktails"][i].library_shifts[j]
+            refx = state["cocktails"][i].ref_shifts[][j]
+            boundx = state["cocktails"][i].bound_shifts[][j]
+            heatmap_csps1[j, i] = abs(libx - refx)
+            heatmap_csps2[j, i] = abs(refx - boundx)
+        end
+    end
+    state["heatmap_csps1"][] = heatmap_csps1
+    state["heatmap_csps2"][] = heatmap_csps2
+end

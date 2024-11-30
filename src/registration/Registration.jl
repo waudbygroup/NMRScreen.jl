@@ -9,6 +9,7 @@ using Measurements
 using MolecularGraph
 using NMRTools
 using Peaks
+using Statistics
 using TOML
 
 using ..NMRScreen

@@ -4,7 +4,7 @@ function rpm(expected_peaks::Vector{Float64},
                 match_threshold::Float64=0.25,
                 T_init::Float64=1.0, 
                 T_final::Float64=0.01, 
-                alpha::Float64=0.9)
+                alpha::Float64=0.99)
     
     # Convert vectors to Nx2 and Mx2 matrices with uniform intensities
     expected_peaks_matrix = hcat(expected_peaks, ones(length(expected_peaks)))
@@ -53,11 +53,11 @@ Returns:
 function rpm(expected_peaks::Matrix{Float64}, 
                 observed_peaks::Matrix{Float64};
                 position_weight::Float64=1.0,
-                intensity_weight::Float64=0.01,
+                intensity_weight::Float64=0.00,
                 match_threshold::Float64=0.25,
                 T_init::Float64=1.0, 
                 T_final::Float64=0.01, 
-                alpha::Float64=0.9)
+                alpha::Float64=0.99)
     
     # Get dimensions
     N, M = size(expected_peaks, 1), size(observed_peaks, 1)
@@ -88,6 +88,7 @@ function rpm(expected_peaks::Matrix{Float64},
             pos_diff = (expected_peaks[i,1] - Y_transformed[j,1])^2
             int_diff = (expected_peaks[i,2] - Y_transformed[j,2])^2
             D[i,j] = sqrt(pos_w * pos_diff + int_w * int_diff)
+            # i.e. distance D = Δδ * weight (and default weight = 1)
         end
         
         # Compute correspondence matrix using softassign
@@ -249,3 +250,9 @@ end
 # p = visualize_matches(expected, observed, x_offset, y_scale, matches)
 # display(p)
 # =#
+
+function getoffsets(xlibrary, xref, xbound, good)
+    xoff1 = median(xref[good] - xlibrary[good])
+    xoff2 = median(xbound[good] - xref[good]) + xoff1
+    return xoff1, xoff2
+end

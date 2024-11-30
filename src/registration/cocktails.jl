@@ -11,8 +11,17 @@ function prepcocktails(cocktails)
         # 1.2. assign fragment peaks
         xref, xbound, good = process_peaks(ids, xlibrary, xref0, xbound0)
 
+        # apply offset to bound spectrum
+        xoff1, xoff2 = getoffsets(xlibrary, xref, xbound, good)
+        @info "Offsets: $xoff1, $xoff2"
+        xref .-= xoff1
+        xbound .-= xoff2
+        newrefspec = add_offset(cocktail.refspec, F1Dim, -xoff1)
+        newboundspec = add_offset(cocktail.boundspec, F1Dim, -xoff2)
+
         RegistrationCocktail(cocktail.id, cocktail.name, cocktail.fragment_ids, smiles,
-            cocktail.refspec, cocktail.boundspec,
+            newrefspec, newboundspec,
+            # cocktail.refspec, cocktail.boundspec,
             ids, xlibrary,
             Observable(xref), Observable(xbound), Observable(good))
     end
@@ -57,5 +66,6 @@ function process_peaks(ids, xlibrary, xref, xbound)
     # Peaks without reference matches already have library positions from initialization
     # and are marked as not good by default
     
+    # return the final peak positions and good/bad flags, along with the offset for the bound->ref matches
     return xref_final, xbound_final, good
 end
