@@ -37,8 +37,11 @@ screen("example/experiment.toml")
 - [x] Sort peaks by chemical shift
 - [x] left/right buttons
 - [x] summary plots (ranked R2)
-- [ ] click points on spectrum to highlight
 - [x] save button
 - [x] adjust peak positions
 - [x] align spectra before calculating CSPs
 - [x] fix scaling of spectra maxima
+- [x] shift+keys to move points faster
+- [ ] click points on spectrum to highlight
+- [ ] drag points on spectrum to move
+- [ ] navigate between multiple peaks for fragment

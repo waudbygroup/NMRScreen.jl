@@ -209,14 +209,22 @@ function gui!(state)
                 if i > 1
                     set_close_to!(slider_cocktails, i-1)
                 end
-            elseif event.key == Keyboard.left_bracket
+            elseif ispressed(fig, Exclusively(Keyboard.left_bracket))
                 nudge_ref_left!(state)
-            elseif event.key == Keyboard.right_bracket
+            elseif ispressed(fig, Exclusively(Keyboard.right_bracket))
                 nudge_ref_right!(state)
-            elseif event.key == Keyboard.comma
+            elseif ispressed(fig, Exclusively(Keyboard.comma))
                 nudge_bound_left!(state)
-            elseif event.key == Keyboard.period
+            elseif ispressed(fig, Exclusively(Keyboard.period))
                 nudge_bound_right!(state)
+            elseif ispressed(fig, Keyboard.left_bracket & (Keyboard.left_shift | Keyboard.right_shift))
+                nudge_ref_left!(state, 10)
+            elseif ispressed(fig, Keyboard.right_bracket & (Keyboard.left_shift | Keyboard.right_shift))
+                nudge_ref_right!(state, 10)
+            elseif ispressed(fig, Keyboard.comma & (Keyboard.left_shift | Keyboard.right_shift))
+                nudge_bound_left!(state, 10)
+            elseif ispressed(fig, Keyboard.period & (Keyboard.left_shift | Keyboard.right_shift))
+                nudge_bound_right!(state, 10)
             end
             if event.action == Keyboard.press && event.key == Keyboard.space
                 cbgood.checked[] = !cbgood.checked[]
@@ -255,23 +263,23 @@ Shortcuts:
     """
 end
 
-function nudge_ref_left!(state)
-    state["ref_x"][][state["current_peak_number"][]] += state["reference_dx"][]
+function nudge_ref_left!(state, n=1)
+    state["ref_x"][][state["current_peak_number"][]] += n * state["reference_dx"][]
     notify(state["ref_x"])
     updateheatmaps!(state)
 end
-function nudge_ref_right!(state)
-    state["ref_x"][][state["current_peak_number"][]] -= state["reference_dx"][]
+function nudge_ref_right!(state, n=1)
+    state["ref_x"][][state["current_peak_number"][]] -= n * state["reference_dx"][]
     notify(state["ref_x"])
     updateheatmaps!(state)
 end
-function nudge_bound_left!(state)
-    state["bound_x"][][state["current_peak_number"][]] += state["bound_dx"][]
+function nudge_bound_left!(state, n=1)
+    state["bound_x"][][state["current_peak_number"][]] += n * state["bound_dx"][]
     notify(state["bound_x"])
     updateheatmaps!(state)
 end
-function nudge_bound_right!(state)
-    state["bound_x"][][state["current_peak_number"][]] -= state["bound_dx"][]
+function nudge_bound_right!(state, n=1)
+    state["bound_x"][][state["current_peak_number"][]] -= n * state["bound_dx"][]
     notify(state["bound_x"])
     updateheatmaps!(state)
 end
