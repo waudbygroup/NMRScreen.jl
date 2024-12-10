@@ -11,6 +11,7 @@ tube_diameter = 5 # mm
 
 [files]
 fragment_library = "library.toml"
+reference_directory = "BSA_test"
 experiment_directory = "BSA_test"
 output_directory = "out"
 

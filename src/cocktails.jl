@@ -7,7 +7,7 @@ end
 function loadcocktail(config, library, cocktail)
     # get cocktail info from experimental parameters (i.e. experiment filenames)
     cocktail_id = cocktail["id"]
-    refspec_path = joinpath(config.experiment_directory, cocktail["reference"])
+    refspec_path = joinpath(config.reference_directory, cocktail["reference"])
     boundspec_path = joinpath(config.experiment_directory, cocktail["experiment"])
 
     # load the NMR data

@@ -14,7 +14,7 @@ function prepcocktails(cocktails)
 
         # apply offset to bound spectrum
         xoff1, xoff2 = getoffsets(xlibrary, xref, xbound, good)
-        @info "Offsets: $xoff1, $xoff2"
+        # @info "Offsets: $xoff1, $xoff2"
         xref .-= xoff1
         xbound .-= xoff2
         newrefspec = add_offset(cocktail.refspec, F1Dim, -xoff1)

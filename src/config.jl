@@ -30,6 +30,9 @@ function parseconfig(filename)
     for field in required_files_fields
         haskey(files, field) || throw(ArgumentError("Missing required field in files section: $field"))
     end
+    if !haskey(files, "reference_directory")
+        files["reference_directory"] = files["experiment_directory"]
+    end
     for field in required_protein_fields
         haskey(protein, field) || throw(ArgumentError("Missing required field in protein section: $field"))
     end
@@ -53,6 +56,7 @@ function parseconfig(filename)
         protein["concentration_unit"],
         protein["buffer"],
         joinpath(wd, files["fragment_library"]),
+        joinpath(wd, files["reference_directory"]),
         joinpath(wd, files["experiment_directory"]),
         joinpath(wd, files["output_directory"]),
         cocktails

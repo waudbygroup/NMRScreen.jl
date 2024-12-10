@@ -79,6 +79,7 @@ function write_heatmaps(state)
     ax = Axis(fig[1,1],
         xlabel="Peak",
         ylabel="Cocktail",
+        backgroundcolor=:grey10,
         yreversed=true,
         yticks=(1:state["n_cocktails"], state["cocktail_ids"])
         )
@@ -98,6 +99,7 @@ function write_heatmaps(state)
     ax = Axis(fig[1,1],
         xlabel="Peak",
         ylabel="Cocktail",
+        backgroundcolor=:grey10,
         yreversed=true,
         yticks=(1:state["n_cocktails"], state["cocktail_ids"])
         )
@@ -117,6 +119,7 @@ function write_heatmaps(state)
     ax = Axis(fig[1,1],
         xlabel="Peak",
         ylabel="Cocktail",
+        backgroundcolor=:grey10,
         yreversed=true,
         yticks=(1:state["n_cocktails"], state["cocktail_ids"])
         )
@@ -136,6 +139,7 @@ function write_heatmaps(state)
     ax = Axis(fig[1,1],
         xlabel="Peak",
         ylabel="Cocktail",
+        backgroundcolor=:grey10,
         yreversed=true,
         yticks=(1:state["n_cocktails"], state["cocktail_ids"])
         )
@@ -156,6 +160,7 @@ function write_heatmaps(state)
     ax = Axis(fig[1,1],
         xlabel="Peak",
         ylabel="Cocktail",
+        backgroundcolor=:grey10,
         yreversed=true,
         yticks=(1:state["n_cocktails"], state["cocktail_ids"])
         )

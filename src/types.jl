@@ -30,6 +30,7 @@ struct ExperimentConfig
     protein_concentration_unit
     buffer
     library_filename
+    reference_directory
     experiment_directory
     output_directory
     cocktails
