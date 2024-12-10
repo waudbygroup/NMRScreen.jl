@@ -195,10 +195,14 @@ function gui!(state)
     end
     on(events(fig.scene).keyboardbutton) do event
         if event.action == Keyboard.press || event.action == Keyboard.repeat
-            if event.key == Keyboard.left
+            if ispressed(fig, Exclusively(Keyboard.left))
                 left!(state)
-            elseif event.key == Keyboard.right
+            elseif ispressed(fig, Exclusively(Keyboard.right))
                 right!(state)
+            elseif ispressed(fig, Keyboard.left & (Keyboard.left_shift | Keyboard.right_shift))
+                navigate_peaks_within_fragment!(state, -1)
+            elseif ispressed(fig, Keyboard.right & (Keyboard.left_shift | Keyboard.right_shift))
+                navigate_peaks_within_fragment!(state, 1)
             elseif event.key == Keyboard.down
                 i = state["current_cocktail_number"][]
                 if i < state["n_cocktails"]
@@ -255,9 +259,10 @@ function showhelp()
 
 Shortcuts:
 - Left/Right arrow keys: Navigate between peaks
+- SHIFT + Left/Right: Navigate between peaks within the same fragment
 - Up/Down arrow keys: Navigate between cocktails
-- '[' / ']': Nudge reference peak left/right
-- ',' / '.': Nudge bound peak left/right
+- '[' / ']': Nudge reference peak left/right (SHIFT for larger movement)
+- ',' / '.': Nudge bound peak left/right (SHIFT for larger movement)
 - Control-click: reset zoom
 - Right-drag: pan spectrum
     """
@@ -309,4 +314,32 @@ function right!(state)
         set_close_to!(state["slider_cocktails"], i)
         set_close_to!(state["slider_peaks"], j)
     end
+end
+
+function navigate_peaks_within_fragment!(state, direction)
+    current_cocktail = state["current_cocktail"][]
+    current_peak_number = state["current_peak_number"][]
+    current_fragment_id = current_cocktail.fragment_ids[current_peak_number]
+
+    # find other peaks matching this fragment id, then set the current peak number to the previous/next one (depending on direction)
+    other_peak_numbers = findall(==(current_fragment_id), current_cocktail.fragment_ids)
+
+    # Find the current index in other_peak_numbers
+    current_index = findfirst(==(current_peak_number), other_peak_numbers)
+    
+    if isnothing(current_index)
+        error("Current peak number not found in fragment peaks")
+    end
+    
+    # Calculate the new index based on direction
+    if direction == 1
+        new_index = current_index % length(other_peak_numbers) + 1
+    elseif direction == -1
+        new_index = (current_index - 2 + length(other_peak_numbers)) % length(other_peak_numbers) + 1
+    else
+        error("Invalid direction: $direction. Must be +/- 1")
+    end
+    
+    # Update the current peak number in the state
+    set_close_to!(state["slider_peaks"], other_peak_numbers[new_index])
 end

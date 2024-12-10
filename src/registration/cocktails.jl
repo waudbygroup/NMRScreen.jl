@@ -3,6 +3,7 @@ function prepcocktails(cocktails)
     map(cocktails) do cocktail
         # 1.1. detect peaks
         ids = [p.id for p in cocktail.peaks]
+        fragment_ids = [p.fragment_id for p in cocktail.peaks]
         smiles = [p.smiles for p in cocktail.peaks]
         xlibrary = [p.library_shift for p in cocktail.peaks]
         xref0 = detectpeaks(cocktail.refspec)
@@ -19,7 +20,7 @@ function prepcocktails(cocktails)
         newrefspec = add_offset(cocktail.refspec, F1Dim, -xoff1)
         newboundspec = add_offset(cocktail.boundspec, F1Dim, -xoff2)
 
-        RegistrationCocktail(cocktail.id, cocktail.name, cocktail.fragment_ids, smiles,
+        RegistrationCocktail(cocktail.id, cocktail.name, fragment_ids, smiles,
             newrefspec, newboundspec,
             # cocktail.refspec, cocktail.boundspec,
             ids, xlibrary,

@@ -48,9 +48,23 @@ function initialisestate(config, library, cocktails)
 end
 
 function addguistuff!(state)
-    state["labeltext"] = lift(state["current_peak"]) do peak
-        "Cocktail: $(peak.cocktail_id)\nPeak: $(peak.peak_id)"
+    state["nfragmentpeaks"] = lift(state["current_cocktail"], state["current_peak_number"]) do current_cocktail, current_peak_number
+        current_fragment_id = current_cocktail.fragment_ids[current_peak_number]
+        other_peaks = findall(==(current_fragment_id), current_cocktail.fragment_ids)
+        current_index = findfirst(==(current_peak_number), other_peaks)
+        (current_index, length(other_peaks))
     end
+    state["labeltext"] = lift(state["current_peak"], state["nfragmentpeaks"]) do peak, nfragmentpeaks
+        current, n = nfragmentpeaks
+        if n == 1
+            "Cocktail: $(peak.cocktail_id)\nPeak: $(peak.peak_id)"
+        else
+            "Cocktail: $(peak.cocktail_id)\nPeak: $(peak.peak_id)\n($current of $n)"
+        end
+    end
+    # state["labeltext"] = lift(state["current_peak"]) do peak
+    #     "Cocktail: $(peak.cocktail_id)\nPeak: $(peak.peak_id)"
+    # end
     state["peakinfotext"] = lift(state["current_peak"]) do peak
         # Cocktail: $(peak.cocktail_id), Peak: $(peak.peak_id)
         """I/I₀: $(II0(peak)), Δδ: $(round(csp(peak), digits=2)) ppm

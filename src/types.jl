@@ -76,7 +76,7 @@ struct BasicPeak <: AbstractPeak
     id
     refspec
     boundspec
-    # fragment_id
+    fragment_id
     cocktail_id
     smiles
     library_shift

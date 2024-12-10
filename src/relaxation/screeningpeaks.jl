@@ -43,7 +43,7 @@ function ScreeningPeak(peak::BasicPeak)
     refspec = peak.refspec
     boundspec = peak.boundspec
     peak_id = peak.id
-    fragment_id = peak_id[1:end-1]
+    fragment_id = peak.fragment_id #peak_id[1:end-1]
     cocktail_id = peak.cocktail_id
     library_shift = peak.library_shift
     reference_shift = peak.ref_shift

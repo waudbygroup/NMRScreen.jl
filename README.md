@@ -44,4 +44,5 @@ screen("example/experiment.toml")
 - [x] shift+keys to move points faster
 - [ ] click points on spectrum to highlight
 - [ ] drag points on spectrum to move
-- [ ] navigate between multiple peaks for fragment
+- [x] navigate between multiple peaks for fragment
+- [ ] make separate ref/expt directories

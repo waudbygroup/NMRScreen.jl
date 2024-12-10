@@ -71,8 +71,19 @@ function initialisestate(config, library, regcocktails)
     end
 
     # info
-    state["labeltext"] = lift(state["current_cocktail_id"], state["current_peak_id"]) do cocktail, peak
-        "Cocktail: $cocktail\nPeak: $peak"
+    state["nfragmentpeaks"] = lift(state["current_cocktail"], state["current_peak_number"]) do current_cocktail, current_peak_number
+        current_fragment_id = current_cocktail.fragment_ids[current_peak_number]
+        other_peaks = findall(==(current_fragment_id), current_cocktail.fragment_ids)
+        current_index = findfirst(==(current_peak_number), other_peaks)
+        (current_index, length(other_peaks))
+    end
+    state["labeltext"] = lift(state["current_cocktail_id"], state["current_peak_id"], state["nfragmentpeaks"]) do cocktail, peak, nfragmentpeaks
+        current, n = nfragmentpeaks
+        if n == 1
+            "Cocktail: $cocktail\nPeak: $peak"
+        else
+            "Cocktail: $cocktail\nPeak: $peak\n($current of $n)"
+        end
     end
 
     state["structure"] = lift(i -> smilestoimage(i), state["current_smiles"])
