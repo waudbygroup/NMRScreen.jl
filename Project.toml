@@ -19,7 +19,7 @@ TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 [compat]
 CairoMakie = "0.12.16"
 FileIO = "1.16.5"
-GLMakie = "0.10.16"
+GLMakie = "0.10.16, 0.11"
 LinearAlgebra = "1.11.0"
 LsqFit = "0.15.0"
 Measurements = "2.11.0"
