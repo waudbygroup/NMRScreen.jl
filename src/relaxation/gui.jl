@@ -27,9 +27,17 @@ function gui!(state)
     hidedecorations!(ax_structure)
     hidespines!(ax_structure)
     image!(ax_structure, state["structure"])
-    save_button = top_panel[1,9] = Button(fig, label = "Save")
+    back_button = top_panel[1,9] = Button(fig, label = "Back")
+    on(back_button.clicks) do _
+        go_back(state)
+    end
+    save_button = top_panel[1,10] = Button(fig, label = "Save")
     on(save_button.clicks) do _
         write_results(state)
+    end
+    quit_button = top_panel[1,11] = Button(fig, label = "Quit")
+    on(quit_button.clicks) do _
+        quit(state)
     end
     colsize!(top_panel, 7, Relative(1/3))
 
@@ -278,6 +286,7 @@ function gui!(state)
 
     showhelp()
 
+    state["finished"] = false
     display(fig)
     while !state["should_close"][]
         sleep(0.1)
@@ -287,6 +296,8 @@ function gui!(state)
     end
     
     GLMakie.closeall()
+
+    return state["finished"]
 end
 
 
@@ -332,4 +343,14 @@ function navigate_peaks_within_fragment!(state, direction)
     
     # Update the current peak number in the state
     set_close_to!(state["slider_peaks"], other_peak_numbers[new_index])
+end
+
+function go_back(state)
+    state["finished"] = false
+    state["should_close"][] = true
+end
+
+function quit(state)
+    state["finished"] = true
+    state["should_close"][] = true
 end

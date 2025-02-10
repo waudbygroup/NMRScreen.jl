@@ -48,9 +48,14 @@ function screen(experiment_toml::String)
     library = parselibrary(config)                  # Load library definitions (fragments + cocktails)
     cocktails = loadcocktails(config, library)      # Load cocktail experimental data
 
-    cocktails = registration(config, library, cocktails)    # Start the registration analysis GUI
-                                                    # this returns cocktails with BasicPeaks
-    relaxation(config, library, cocktails)      # Start the relaxation analysis GUI
+    cocktails, regstate = registration(config, library, cocktails)    # Start the registration analysis GUI
+
+    while true
+        finished = relaxation(config, library, cocktails)       # Start the relaxation analysis GUI
+
+        finished && break
+        cocktails, regstate = registration(regstate)            # Return to registration analysis
+    end
 end
 
 

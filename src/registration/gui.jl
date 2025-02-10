@@ -248,7 +248,8 @@ function gui!(state)
             break
         end
     end
-    
+
+    state["should_close"][] = false # reset for next iteration
     GLMakie.closeall()
 end
 

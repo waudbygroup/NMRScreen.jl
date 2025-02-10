@@ -34,21 +34,27 @@ Start the registration analysis interface.
 
 # Returns
 - `cocktails`: Updated cocktails data structure
+- `state`: Updated state data structure (for returning to the GUI)
 """
 function registration(config, library, cocktails)
     # 1. prepare registration cocktails
     regcocktails = prepcocktails(cocktails)
-    
+
     # 2. initialise state for GUI
     state = initialisestate(config, library, regcocktails)
 
     # 3. show GUI
+    registration(state)
+end
+
+# start registration from state - for returning to the GUI
+function registration(state)
     gui!(state)
     
     # 4. generate updated cocktails from state
     cocktails = recreatecocktails(state)
 
-    return cocktails
+    return cocktails, state
 end
 
 end
