@@ -222,13 +222,33 @@ function gui!(state)
             elseif ispressed(fig, Exclusively(Keyboard.period))
                 nudge_bound_right!(state)
             elseif ispressed(fig, Keyboard.left_bracket & (Keyboard.left_shift | Keyboard.right_shift))
-                nudge_ref_left!(state, 10)
+                # Find next peak in reference spectrum
+                current_pos = state["ref_x"][][state["current_peak_number"][]]
+                new_pos = find_nearest_peak(state["reference_spec"][], current_pos, -1)
+                state["ref_x"][][state["current_peak_number"][]] = new_pos
+                notify(state["ref_x"])
+                updateheatmaps!(state)
             elseif ispressed(fig, Keyboard.right_bracket & (Keyboard.left_shift | Keyboard.right_shift))
-                nudge_ref_right!(state, 10)
+                # Find next peak in reference spectrum
+                current_pos = state["ref_x"][][state["current_peak_number"][]]
+                new_pos = find_nearest_peak(state["reference_spec"][], current_pos, +1)
+                state["ref_x"][][state["current_peak_number"][]] = new_pos
+                notify(state["ref_x"])
+                updateheatmaps!(state)
             elseif ispressed(fig, Keyboard.comma & (Keyboard.left_shift | Keyboard.right_shift))
-                nudge_bound_left!(state, 10)
+                # Find next peak in bound spectrum
+                current_pos = state["bound_x"][][state["current_peak_number"][]]
+                new_pos = find_nearest_peak(state["bound_spec"][], current_pos, -1)
+                state["bound_x"][][state["current_peak_number"][]] = new_pos
+                notify(state["bound_x"])
+                updateheatmaps!(state)
             elseif ispressed(fig, Keyboard.period & (Keyboard.left_shift | Keyboard.right_shift))
-                nudge_bound_right!(state, 10)
+                # Find next peak in bound spectrum
+                current_pos = state["bound_x"][][state["current_peak_number"][]]
+                new_pos = find_nearest_peak(state["bound_spec"][], current_pos, +1)
+                state["bound_x"][][state["current_peak_number"][]] = new_pos
+                notify(state["bound_x"])
+                updateheatmaps!(state)
             end
             if event.action == Keyboard.press && event.key == Keyboard.space
                 cbgood.checked[] = !cbgood.checked[]
@@ -343,4 +363,25 @@ function navigate_peaks_within_fragment!(state, direction)
     
     # Update the current peak number in the state
     set_close_to!(state["slider_peaks"], other_peak_numbers[new_index])
+end
+
+function find_nearest_peak(spec, current_pos, direction; snr_threshold=3)
+    x = data(spec, F1Dim)
+    y = data(spec[:,1]) / spec[:noise]
+
+    pks = findmaxima(y)     # detect peaks
+    peakheights!(pks; min=snr_threshold) # filter list
+
+    peak_shifts = x[pks.indices]
+    
+    # Find peaks in the specified direction from current position
+    if direction > 0
+        candidates = peak_shifts[peak_shifts .< current_pos]
+        isempty(candidates) && return current_pos
+        return maximum(candidates)
+    else
+        candidates = peak_shifts[peak_shifts .> current_pos]
+        isempty(candidates) && return current_pos
+        return minimum(candidates)
+    end
 end
