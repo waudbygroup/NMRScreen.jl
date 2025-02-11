@@ -1,6 +1,7 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 DocumenterTools = "35a29f4d-8980-5a13-9543-d66fff28ecb8"
+NMRScreen = "e6af4f88-7701-4df4-8af7-4e9c6957a0a0"
 
 [compat]
 Documenter = "1.8"
