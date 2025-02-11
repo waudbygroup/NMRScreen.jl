@@ -1,16 +1,18 @@
 # NMRScreen.jl
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://waudbygroup.github.io/NMRScreen.jl/stable)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://waudbygroup.github.io/NMRScreen.jl/dev)
-
 NMRScreen.jl is a Julia package for analysis of NMR fragment screening data, currently specialising in 19F R₂ relaxation measurements.
 
-![Screenshot of NMRScreen.jl analysis window](./docs/src/assets/analysis-screenshot.png)
+![Screenshot of NMRScreen.jl analysis window](./assets/analysis-screenshot.png)
 
-## Development Status
-NMRScreen.jl is in early development and actively evolving. While the core functionality is stable, you may encounter changes in the API, data formats, and features as we continue to improve the package. We're currently focused on R₂-based screening but plan to expand to other NMR screening approaches in future releases.
+```@contents
+Pages = ["index.md"]
+Depth = 3
+```
 
-We warmly welcome feedback, bug reports, and contributions! If you encounter issues, have feature suggestions, or would like to contribute to development, please visit our GitHub repository at [https://github.com/waudbygroup/NMRScreen.jl]. Even if you're new to Julia, we're happy to help you get started with contributing.
+!!! note Development Status
+    NMRScreen.jl is in early development and actively evolving. While the core functionality is stable, you may encounter changes in the API, data formats, and features as we continue to improve the package. We're currently focused on R₂-based screening but plan to expand to other NMR screening approaches in future releases.
+
+    We warmly welcome feedback, bug reports, and contributions! If you encounter issues, have feature suggestions, or would like to contribute to development, please visit our GitHub repository at [https://github.com/waudbygroup/NMRScreen.jl]. Even if you're new to Julia, we're happy to help you get started with contributing.
 
 
 ## Quick Start
@@ -176,7 +178,7 @@ Important notes:
 
 The first stage aligns observed peaks with the fragment library:
 
-![Screenshot of NMRScreen.jl registration window](./docs/src/assets/registration-screenshot.png)
+![Screenshot of NMRScreen.jl registration window](./assets/registration-screenshot.png)
 
 Keyboard shortcuts:
 - ←/→: Navigate between peaks
@@ -191,7 +193,7 @@ Keyboard shortcuts:
 
 The second stage quantifies binding through ΔR₂ analysis:
 
-![Screenshot of NMRScreen.jl analysis window](./docs/src/analysis-screenshot.png)
+![Screenshot of NMRScreen.jl analysis window](./assets/analysis-screenshot.png)
 
 Keyboard shortcuts:
 - ←/→: Navigate between peaks
@@ -208,7 +210,7 @@ Results are saved in the specified output directory:
 
 1. **top_fragments.pdf**: Fragments ranked by ΔR₂ with distribution histogram
 
-![Top fragments](./docs/src/assets/top_fragments.png)
+![Top fragments](./assets/top_fragments.png)
 
 2. **Heatmaps**: Visualisations of:
    - ΔR₂ vs cocktail and peak number
@@ -217,11 +219,11 @@ Results are saved in the specified output directory:
    - Relaxation fitting quality (reduced χ²)
    - Reference R₂ (for aggregation detection)
 
-![ΔR2 heatmap](./docs/src/assets/DeltaR2.png)
+![ΔR2 heatmap](./assets/DeltaR2.png)
 
 3. **Result cards**: PDF summary for each peak
 
-![Example result card](./docs/src/assets/1F-380S-01-C01a.png)
+![Example result card](./assets/1F-380S-01-C01a.png)
 
 4. **results.csv**: Complete numerical results including:
    - Fragment and cocktail identifiers

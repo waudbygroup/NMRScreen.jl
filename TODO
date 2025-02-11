@@ -1,0 +1,16 @@
+## TODO
+
+- [x] Add heat maps for base R2 and CSPs
+- [x] Test with multiple cocktails and different numbers of peaks
+- [x] Sort peaks by chemical shift
+- [x] left/right buttons
+- [x] summary plots (ranked R2)
+- [x] save button
+- [x] adjust peak positions
+- [x] align spectra before calculating CSPs
+- [x] fix scaling of spectra maxima
+- [x] shift+keys to move points faster
+- [x] navigate between multiple peaks for fragment
+- [x] make separate ref/expt directories
+- [ ] click points on spectrum to highlight
+- [ ] drag points on spectrum to move
