@@ -1,5 +1,7 @@
 # NMRScreen.jl
 
+adding some text to the README…
+
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://waudbygroup.github.io/NMRScreen.jl/stable)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://waudbygroup.github.io/NMRScreen.jl/dev)
 
