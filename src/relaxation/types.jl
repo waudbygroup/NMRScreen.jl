@@ -26,6 +26,7 @@ struct ScreeningPeak <: AbstractPeak
     boundspec
     peak_id
     fragment_id
+    smiles
     cocktail_id
     library_shift
     reference_shift
