@@ -34,7 +34,7 @@ function write_results_csv(filename, cocktails)
     @info "Writing results to $filename"
     open(filename, "w") do io
         # Write the header
-        println(io, "cocktail_id,fragment_id,peak_id,library_shift,reference_shift,bound_shift,intensity_ratio,intensity_ratio_error,chemical_shift_perturbation,reference_R2,reference_R2_error,bound_R2,bound_R2_error,DeltaR2,DeltaR2_error,reduced_chi2")
+        println(io, "cocktail_id,fragment_id,peak_id,smiles,library_shift,reference_shift,bound_shift,intensity_ratio,intensity_ratio_error,chemical_shift_perturbation,reference_R2,reference_R2_error,bound_R2,bound_R2_error,DeltaR2,DeltaR2_error,reduced_chi2")
         
         for cocktail in cocktails
             for peak in cocktail.peaks
@@ -42,6 +42,7 @@ function write_results_csv(filename, cocktails)
                     peak.cocktail_id,
                     peak.fragment_id,
                     peak.peak_id,
+                    peak.smiles,
                     peak.library_shift,
                     peak.reference_shift,
                     peak.bound_shift,

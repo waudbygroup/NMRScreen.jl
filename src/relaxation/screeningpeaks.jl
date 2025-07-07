@@ -44,6 +44,7 @@ function ScreeningPeak(peak::BasicPeak)
     boundspec = peak.boundspec
     peak_id = peak.id
     fragment_id = peak.fragment_id #peak_id[1:end-1]
+    smiles = peak.smiles
     cocktail_id = peak.cocktail_id
     library_shift = peak.library_shift
     reference_shift = peak.ref_shift
@@ -53,6 +54,7 @@ function ScreeningPeak(peak::BasicPeak)
         boundspec,
         peak_id,
         fragment_id,
+        smiles,
         cocktail_id,
         library_shift,
         reference_shift,
@@ -63,6 +65,7 @@ function ScreeningPeak(refspec,
         boundspec,
         peak_id,
         fragment_id,
+        smiles,
         cocktail_id,
         library_shift,
         reference_shift,
@@ -80,6 +83,7 @@ function ScreeningPeak(refspec,
         boundspec,
         peak_id,
         fragment_id,
+        smiles,
         cocktail_id,
         library_shift,
         reference_shift,
