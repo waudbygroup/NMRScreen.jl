@@ -1,6 +1,7 @@
 module Relaxation
 
 using CairoMakie
+using Distances
 using FileIO
 using GLMakie
 using LinearAlgebra
@@ -9,7 +10,10 @@ using Measurements
 using MolecularGraph
 using NMRTools
 using Peaks
+using RDKitMinimalLib
+using Statistics
 using TOML
+using UMAP
 
 using ..NMRScreen
 using ..Types

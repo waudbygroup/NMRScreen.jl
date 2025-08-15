@@ -2,17 +2,17 @@
 
 NMRScreen.jl is a Julia package for analysis of NMR fragment screening data, currently specialising in 19F R₂ relaxation measurements.
 
-![Screenshot of NMRScreen.jl analysis window](./assets/analysis-screenshot.png)
+![Screenshot of NMRScreen.jl analysis window with heatmap](./assets/analysis-heatmap-screenshot.png)
 
 ```@contents
 Pages = ["index.md"]
 Depth = 3
 ```
 
-!!! note Development Status
-    NMRScreen.jl is in early development and actively evolving. While the core functionality is stable, you may encounter changes in the API, data formats, and features as we continue to improve the package. We're currently focused on R₂-based screening but plan to expand to other NMR screening approaches in future releases.
+## Development Status
+NMRScreen.jl is in early development and actively evolving. While the core functionality is stable, you may encounter changes in the API, data formats, and features as we continue to improve the package. We're currently focused on R₂-based screening but plan to expand to other NMR screening approaches in future releases.
 
-    We warmly welcome feedback, bug reports, and contributions! If you encounter issues, have feature suggestions, or would like to contribute to development, please visit our GitHub repository at [https://github.com/waudbygroup/NMRScreen.jl]. Even if you're new to Julia, we're happy to help you get started with contributing.
+We warmly welcome feedback, bug reports, and contributions! If you encounter issues, have feature suggestions, or would like to contribute to development, please visit our GitHub repository at [https://github.com/waudbygroup/NMRScreen.jl]. Even if you're new to Julia, we're happy to help you get started with contributing.
 
 
 ## Quick Start
@@ -182,10 +182,10 @@ The first stage aligns observed peaks with the fragment library:
 
 Keyboard shortcuts:
 - ←/→: Navigate between peaks
-- SHIFT + ←/→: Navigate between peaks within fragment
+- SHIFT + ←/→: Navigate between peaks within the same fragment
 - ↑/↓: Navigate between cocktails
-- '[' / ']': Nudge reference peak (SHIFT for next maximum)
-- ',' / '.': Nudge bound peak (SHIFT for next maximum)
+- '[' / ']': Nudge reference peak left/right (SHIFT for next maximum)
+- ',' / '.': Nudge bound peak left/right (SHIFT for next maximum)
 - Control-click: Reset zoom
 - Right-drag: Pan spectrum
 
@@ -193,16 +193,17 @@ Keyboard shortcuts:
 
 The second stage quantifies binding through ΔR₂ analysis:
 
-![Screenshot of NMRScreen.jl analysis window](./assets/analysis-screenshot.png)
+![Screenshot of NMRScreen.jl analysis window with heatmap](./assets/analysis-heatmap-screenshot.png)
+![Screenshot of NMRScreen.jl analysis window with chemical space map](./assets/analysis-umap-screenshot.png)
 
 Keyboard shortcuts:
 - ←/→: Navigate between peaks
-- SHIFT + ←/→: Navigate between peaks within fragment
+- SHIFT + ←/→: Navigate between peaks within the same fragment
 - ↑/↓: Navigate between cocktails
-- Mouse wheel: Adjust heatmap scale / zoom
-- Click heatmap: Select peak
-- Control-click: Reset zoom
-- Right-drag: Pan spectrum
+- Mouse wheel: Adjust heatmap scale / spectrum zoom level
+- Click points on heatmap / chemical space map: Select peak
+- Control-click: Reset zoom of spectrum / chemical space map
+- Right-drag: Pan spectrum / chemical space map
 
 ## Output Files
 

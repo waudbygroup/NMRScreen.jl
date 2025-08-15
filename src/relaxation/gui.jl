@@ -154,39 +154,49 @@ function gui!(state)
     
 
     # # Bottom-right panel
-    # menu = bottom_panel[1,2] = Menu(fig, options = ["DeltaR2", "Relative Intensity", "CSP", "Base R2"])
-    menu = bottom_panel[1,2] = Menu(fig, options = ["ΔR₂", "Relative Intensity", "Chemical Shift Perturbation", "Reference R₂", "Reduced χ²"])
-    on(menu.selection) do s
+    # data_menu = menus[1,1] = Menu(fig, options = ["DeltaR2", "Relative Intensity", "CSP", "Base R2"])
+    menus = bottom_panel[1,2] = GridLayout()
+    data_menu = menus[1,1] = Menu(fig, options = ["ΔR₂", "Relative Intensity", "Chemical Shift Perturbation", "Reference R₂", "Reduced χ²"])
+    on(data_menu.selection) do s
         if s == "ΔR₂"
             connect!(state["heatmap_data"], state["DeltaR2_heatmap"])
+            connect!(state["umap_color"], state["umap_DeltaR2s"])
             state["heatmap_label"][] = "ΔR₂ (s⁻¹)"
             state["heatmap_limits"][] = (0., maximum(filter(!isnan,state["DeltaR2_heatmap"][])))
             state["heatmap_cm"][] = :viridis
         elseif s == "Relative Intensity"
             connect!(state["heatmap_data"], state["II0_heatmap"])
+            connect!(state["umap_color"], state["umap_II0s"])
             state["heatmap_label"][] = "I/I₀"
             state["heatmap_limits"][] = (0., 1.)
             state["heatmap_cm"][] = Reverse(:viridis)
         elseif s == "Reference R₂"
             connect!(state["heatmap_data"], state["refR2_heatmap"])
+            connect!(state["umap_color"], state["umap_refR2s"])
             state["heatmap_label"][] = "Reference R₂ (s⁻¹)"
             state["heatmap_limits"][] = (0., maximum(filter(!isnan,state["refR2_heatmap"][])))
             state["heatmap_cm"][] = :viridis
         elseif s == "Chemical Shift Perturbation"
             connect!(state["heatmap_data"], state["csps_heatmap"])
+            connect!(state["umap_color"], state["umap_csps"])
             state["heatmap_label"][] = "Chemical Shift Perturbation (ppm)"
             state["heatmap_limits"][] = (0., maximum(filter(!isnan,state["csps_heatmap"][])))
             state["heatmap_cm"][] = :viridis
         elseif s == "Reduced χ²"
             connect!(state["heatmap_data"], state["reducedchi2_heatmap"])
+            connect!(state["umap_color"], state["umap_reducedchi2s"])
             state["heatmap_label"][] = "Reduced χ²"
             state["heatmap_limits"][] = (0., maximum(filter(!isnan,state["reducedchi2_heatmap"][])))
             state["heatmap_cm"][] = :viridis
         end
     end
-    notify(menu.selection)
+    notify(data_menu.selection)
+    plot_menu = menus[1,2] = Menu(fig, options = ["Heatmap", "UMAP"])
+    # Offscreen box for storing idle plot
+    idle_plot = GridLayout(bbox = BBox(-200, -100, 0, 100))
 
-    ax_heatmap = bottom_panel[2,2] = Axis(fig,
+    heatmap = GridLayout()
+    ax_heatmap = heatmap[1,1] = Axis(fig,
         xlabel="Peak",
         ylabel="Cocktail",
         yreversed=true,
@@ -199,16 +209,15 @@ function gui!(state)
         backgroundcolor=:grey10,
         yticks=(1:state["n_cocktails"], state["cocktail_ids"])
         )
-    hm = heatmap!(ax_heatmap, state["heatmap_data"],
+    heatmap_graph = heatmap!(ax_heatmap, state["heatmap_data"],
         colormap=state["heatmap_cm"],
         colorrange=state["heatmap_limits"])
-    cb = Colorbar(bottom_panel[2,3], hm, label=state["heatmap_label"])
     scatter!(ax_heatmap, state["heatmap_point"], color=c4, marker=:star5, markersize=12)
     # Event handler for heatmap click
     on(events(ax_heatmap).mousebutton) do event
         if event.button == Mouse.left && event.action == Mouse.release
             plt, i = pick(fig)
-            plt == hm || return
+            plt == heatmap_graph || return
             i > 0 || return
             idx = CartesianIndices(state["heatmap_data"][])[i]
             peak_idx = idx[1]
@@ -222,7 +231,7 @@ function gui!(state)
         end
     end
     on(events(ax_heatmap).scroll) do (_, dy)
-        s = menu.selection[]
+        s = data_menu.selection[]
         if s == "ΔR₂"
             state["heatmap_limits"][] = (0., clamp(state["heatmap_limits"][][2] + dy, 1..100))
         elseif s == "Relative Intensity"
@@ -235,6 +244,71 @@ function gui!(state)
             state["heatmap_limits"][] = (0., clamp(state["heatmap_limits"][][2] + dy, 1,100))
         end
     end
+
+    chemical_space = GridLayout()
+    ax_umap = chemical_space[1,1] = Axis(fig,
+        xzoomlock=true,
+        yzoomlock=true,
+        xrectzoom=true,
+        yrectzoom=true,
+        xpanlock=false,
+        ypanlock=false)
+    umap_plot = scatter!(ax_umap, 
+        state["umap_xs"], 
+        state["umap_ys"],
+        color=state["umap_color"], 
+        colormap=state["heatmap_cm"],
+        colorrange=state["heatmap_limits"],
+        markersize=12)
+    #scatter!(ax_umap, state["umap_current_x"], state["umap_current_y"], color=c4, marker='×', markersize=20)
+    on(events(ax_umap).mousebutton) do event
+        if event.button == Mouse.left && event.action == Mouse.release
+            plt, i = pick(fig)
+            plt == umap_plot || return
+            i > 0 || return
+            peak_idx = i
+            cocktail_idx = 1
+            while peak_idx > length(state["cocktails"][cocktail_idx].peaks)
+                peak_idx -= length(state["cocktails"][cocktail_idx].peaks)
+                cocktail_idx += 1
+            end
+
+            if peak_idx <= length(state["cocktails"][cocktail_idx].peaks)
+                set_close_to!(slider_cocktails, cocktail_idx)
+                set_close_to!(slider_peaks, peak_idx)
+                # state["current_cocktail_number"][] = cocktail_idx
+                # state["current_peak_number"][] = peak_idx
+            end
+        end
+    end
+    on(events(ax_umap).scroll) do (_, dy)
+        s = data_menu.selection[]
+        if s == "ΔR₂"
+            state["heatmap_limits"][] = (0., clamp(state["heatmap_limits"][][2] + dy, 1..100))
+        elseif s == "Relative Intensity"
+            state["heatmap_limits"][] = (clamp(state["heatmap_limits"][][1] + dy/10, 0..0.9), 1.)
+        elseif s == "Reference R₂"
+            state["heatmap_limits"][] = (0., clamp(state["heatmap_limits"][][2] + dy, 1..100))
+        elseif s == "Chemical Shift Perturbation"
+            state["heatmap_limits"][] = (0., clamp(state["heatmap_limits"][][2] + dy/100, 0.01,2))
+        elseif s == "Reduced χ²"
+            state["heatmap_limits"][] = (0., clamp(state["heatmap_limits"][][2] + dy, 1,100))
+        end
+    end
+    
+    bottom_panel[2,2] = heatmap
+    on(plot_menu.selection) do s
+        if s == "Heatmap"
+            bottom_panel[2,2] = heatmap
+            idle_plot[1,1] = chemical_space
+            heatmap_cb = Colorbar(bottom_panel[2,3], heatmap_graph, label=state["heatmap_label"])
+        elseif s == "UMAP"
+            bottom_panel[2,2] = chemical_space
+            idle_plot[1,1] = heatmap
+            umap_cb = Colorbar(bottom_panel[2,3], umap_plot, label=state["heatmap_label"])
+        end
+    end
+    notify(plot_menu.selection)
 
     on(events(fig.scene).keyboardbutton) do event
         if event.action == Keyboard.press || event.action == Keyboard.repeat
@@ -281,13 +355,13 @@ function gui!(state)
     end
 
     colsize!(bottom_panel, 1, Relative(1/4))
-    # rowsize!(fig.layout, 1, Relative(1/4))
-    rowsize!(fig.layout, 2, Relative(0.28))
+    rowsize!(fig.layout, 1, Relative(0.12))
+    rowsize!(fig.layout, 3, Relative(0.58))
 
     showhelp()
 
     state["finished"] = false
-    display(fig)
+    display(fig, float = false)
     while !state["should_close"][]
         sleep(0.1)
         if !isopen(fig.scene)
@@ -305,14 +379,14 @@ function showhelp()
     @info """
 # NMR Fragment Screening Analysis
 
-Shortcuts:
-- Left/Right arrow keys: Navigate between peaks
-- SHIFT + Left/Right: Navigate between peaks within the same fragment
-- Up/Down arrow keys: Navigate between cocktails
+Keyboard shortcuts:
+- ←/→: Navigate between peaks
+- SHIFT + ←/→: Navigate between peaks within the same fragment
+- ↑/↓: Navigate between cocktails
 - Mouse wheel: Adjust heatmap scale / spectrum zoom level
-- Click on heatmap: Select peak
-- Control-click: reset zoom
-- Right-drag: pan spectrum
+- Click points on heatmap / chemical space map: Select peak
+- Control-click: Reset zoom of spectrum / chemical space map
+- Right-drag: Pan spectrum / chemical space map
     """
 end
 

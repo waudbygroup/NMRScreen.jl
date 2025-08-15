@@ -39,13 +39,15 @@
 # end
 
 
-function ScreeningPeak(peak::BasicPeak)
+function ScreeningPeak(peak::BasicPeak, x, y)
     refspec = peak.refspec
     boundspec = peak.boundspec
     peak_id = peak.id
     fragment_id = peak.fragment_id #peak_id[1:end-1]
     smiles = peak.smiles
     cocktail_id = peak.cocktail_id
+    umap_x = x
+    umap_y = y
     library_shift = peak.library_shift
     reference_shift = peak.ref_shift
     bound_shift = peak.bound_shift
@@ -56,6 +58,8 @@ function ScreeningPeak(peak::BasicPeak)
         fragment_id,
         smiles,
         cocktail_id,
+        umap_x,
+        umap_y,
         library_shift,
         reference_shift,
         bound_shift)
@@ -67,6 +71,8 @@ function ScreeningPeak(refspec,
         fragment_id,
         smiles,
         cocktail_id,
+        umap_x,
+        umap_y,
         library_shift,
         reference_shift,
         bound_shift)
@@ -85,6 +91,8 @@ function ScreeningPeak(refspec,
         fragment_id,
         smiles,
         cocktail_id,
+        umap_x,
+        umap_y,
         library_shift,
         reference_shift,
         bound_shift,

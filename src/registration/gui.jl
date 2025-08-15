@@ -1,5 +1,5 @@
 function gui!(state)
-    fig = Figure(size = (1200, 600))
+    fig = Figure(size = (1200, 660))
     c1 = Makie.wong_colors()[1]
     c2 = Makie.wong_colors()[2]
     c3 = Makie.wong_colors()[3]
@@ -256,12 +256,12 @@ function gui!(state)
         end
     end
 
-    # rowsize!(fig.layout, 1, Relative(1/4))
-    # rowsize!(fig.layout, 2, Relative(1/3))
+    rowsize!(fig.layout, 1, Relative(0.2))
+    rowsize!(fig.layout, 3, Relative(0.4))
 
     showhelp()
 
-    display(fig)
+    display(fig, float = false)
     while !state["should_close"][]
         sleep(0.1)
         if !isopen(fig.scene)
@@ -278,14 +278,14 @@ function showhelp()
     @info """
 # NMR Cocktail Peak Alignment
 
-Shortcuts:
-- Left/Right arrow keys: Navigate between peaks
-- SHIFT + Left/Right: Navigate between peaks within the same fragment
-- Up/Down arrow keys: Navigate between cocktails
-- '[' / ']': Nudge reference peak left/right (SHIFT for larger movement)
-- ',' / '.': Nudge bound peak left/right (SHIFT for larger movement)
-- Control-click: reset zoom
-- Right-drag: pan spectrum
+Keyboard shortcuts:
+- ←/→: Navigate between peaks
+- SHIFT + ←/→: Navigate between peaks within the same fragment
+- ↑/↓: Navigate between cocktails
+- '[' / ']': Nudge reference peak left/right (SHIFT for next maximum)
+- ',' / '.': Nudge bound peak left/right (SHIFT for next maximum)
+- Control-click: Reset zoom
+- Right-drag: Pan spectrum
     """
 end
 
