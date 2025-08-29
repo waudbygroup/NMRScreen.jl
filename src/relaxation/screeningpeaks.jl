@@ -39,15 +39,15 @@
 # end
 
 
-function ScreeningPeak(peak::BasicPeak, x, y)
+function ScreeningPeak(peak::BasicPeak)
     refspec = peak.refspec
     boundspec = peak.boundspec
     peak_id = peak.id
     fragment_id = peak.fragment_id #peak_id[1:end-1]
     smiles = peak.smiles
     cocktail_id = peak.cocktail_id
-    umap_x = x
-    umap_y = y
+    umap_x = 0.0
+    umap_y = 0.0
     library_shift = peak.library_shift
     reference_shift = peak.ref_shift
     bound_shift = peak.bound_shift
@@ -132,4 +132,42 @@ end
 
 function reducedchi2(sp::ScreeningPeak)
     (sp.reference_relaxation.reducedchi2 + sp.bound_relaxation.reducedchi2) / 2
+end
+
+function ScreeningPeak(sp::ScreeningPeak, x, y)
+    refspec = sp.refspec
+    boundspec = sp.boundspec
+    peak_id = sp.peak_id
+    fragment_id = sp.fragment_id
+    smiles = sp.smiles
+    cocktail_id = sp.cocktail_id
+    umap_x = x
+    umap_y = y
+    library_shift = sp.library_shift
+    reference_shift = sp.reference_shift
+    bound_shift = sp.bound_shift
+    reference_intensity = sp.reference_intensity
+    reference_intensity_error = sp.reference_intensity_error
+    bound_intensity = sp.bound_intensity
+    bound_intensity_error = sp.bound_intensity_error
+    reference_relaxation = sp.reference_relaxation
+    bound_relaxation = sp.bound_relaxation
+
+    ScreeningPeak(refspec,
+        boundspec,
+        peak_id,
+        fragment_id,
+        smiles,
+        cocktail_id,
+        umap_x,
+        umap_y,
+        library_shift,
+        reference_shift,
+        bound_shift,
+        reference_intensity,
+        reference_intensity_error,
+        bound_intensity,
+        bound_intensity_error,
+        reference_relaxation,
+        bound_relaxation)
 end
