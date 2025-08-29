@@ -28,6 +28,8 @@ struct ScreeningPeak <: AbstractPeak
     fragment_id
     smiles
     cocktail_id
+    umap_x
+    umap_y
     library_shift
     reference_shift
     bound_shift

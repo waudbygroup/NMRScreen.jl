@@ -50,7 +50,7 @@ end
 # start registration from state - for returning to the GUI
 function registration(state)
     gui!(state)
-    
+
     # 4. generate updated cocktails from state
     cocktails = recreatecocktails(state)
 

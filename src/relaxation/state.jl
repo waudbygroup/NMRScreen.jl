@@ -40,6 +40,14 @@ function initialisestate(config, library, cocktails)
     state["refR2_heatmap"] = Observable(refR2s(state))
     state["reducedchi2_heatmap"] = Observable(reducedchi2s(state))
 
+    state["umap_xs"] = Observable(umap_xs(state))
+    state["umap_ys"] = Observable(umap_ys(state))
+    state["umap_csps"] = Observable(umap_csps(state))
+    state["umap_II0s"] = Observable(umap_II0s(state))
+    state["umap_DeltaR2s"] = Observable(umap_DeltaR2s(state))
+    state["umap_refR2s"] = Observable(umap_refR2s(state))
+    state["umap_reducedchi2s"] = Observable(umap_reducedchi2s(state))
+
     state["smiles"] = lift(i -> library.fragments[i.fragment_id].smiles, state["current_peak"])
     state["structure"] = lift(i -> smilestoimage(i), state["smiles"])
 
@@ -99,6 +107,10 @@ function addguistuff!(state)
         Point2f(i, j)
     end
 
+    state["umap_color"] = Observable(randn(sum([length(cocktail.peaks) for cocktail in state["cocktails"]])))
+    state["umap_current_x"] = lift(i -> i.umap_x, state["current_peak"])
+    state["umap_current_y"] = lift(i -> i.umap_y, state["current_peak"])
+
     state["should_close"] = Observable(false)
 end
 
@@ -155,4 +167,74 @@ function reducedchi2s(state)
     end
 
     return reducedchi2s
+end
+
+function umap_xs(state)
+    umap_xs = []
+    for cocktail in state["cocktails"]
+        for peak in cocktail.peaks
+            push!(umap_xs, peak.umap_x)
+        end
+    end
+    return umap_xs
+end
+
+function umap_ys(state)
+    umap_ys = []
+    for cocktail in state["cocktails"]
+        for peak in cocktail.peaks
+            push!(umap_ys, peak.umap_y)
+        end
+    end
+    return umap_ys
+end
+
+function umap_refR2s(state)
+    umap_refR2s = []
+    for cocktail in state["cocktails"]
+        for peak in cocktail.peaks
+            push!(umap_refR2s, Measurements.value(refR2(peak)))
+        end
+    end
+    return umap_refR2s
+end
+
+function umap_DeltaR2s(state)
+    umap_DeltaR2s = []
+    for cocktail in state["cocktails"]
+        for peak in cocktail.peaks
+            push!(umap_DeltaR2s, Measurements.value(DeltaR2(peak)))
+        end
+    end
+    return umap_DeltaR2s
+end
+
+function umap_II0s(state)
+    umap_II0s = []
+    for cocktail in state["cocktails"]
+        for peak in cocktail.peaks
+            push!(umap_II0s, Measurements.value(II0(peak)))
+        end
+    end
+    return umap_II0s
+end
+
+function umap_csps(state)
+    umap_csps = []
+    for cocktail in state["cocktails"]
+        for peak in cocktail.peaks
+            push!(umap_csps, abs(Measurements.value(csp(peak))))
+        end
+    end
+    return umap_csps
+end
+
+function umap_reducedchi2s(state)
+    umap_reducedchi2s = []
+    for cocktail in state["cocktails"]
+        for peak in cocktail.peaks
+            push!(umap_reducedchi2s, reducedchi2(peak))
+        end
+    end
+    return umap_reducedchi2s
 end

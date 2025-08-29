@@ -17,6 +17,7 @@ function write_results(state)
     # state["fig"].scene.backgroundcolor[] = RGBf(1,.85,.85)
     write_results_csv(joinpath(od, "results.csv"), state["cocktails"])
     write_heatmaps(state)
+    write_umap_plots(state)
     write_peaks(state)
     write_top_fragments(state)
 
@@ -34,7 +35,7 @@ function write_results_csv(filename, cocktails)
     @info "Writing results to $filename"
     open(filename, "w") do io
         # Write the header
-        println(io, "cocktail_id,fragment_id,peak_id,smiles,library_shift,reference_shift,bound_shift,intensity_ratio,intensity_ratio_error,chemical_shift_perturbation,reference_R2,reference_R2_error,bound_R2,bound_R2_error,DeltaR2,DeltaR2_error,reduced_chi2")
+        println(io, "cocktail_id,fragment_id,peak_id,smiles,umap_x,umap_y,library_shift,reference_shift,bound_shift,intensity_ratio,intensity_ratio_error,chemical_shift_perturbation,reference_R2,reference_R2_error,bound_R2,bound_R2_error,DeltaR2,DeltaR2_error,reduced_chi2")
         
         for cocktail in cocktails
             for peak in cocktail.peaks
@@ -43,6 +44,8 @@ function write_results_csv(filename, cocktails)
                     peak.fragment_id,
                     peak.peak_id,
                     peak.smiles,
+                    peak.umap_x,
+                    peak.umap_y,
                     peak.library_shift,
                     peak.reference_shift,
                     peak.bound_shift,
@@ -179,6 +182,104 @@ function write_heatmaps(state)
     GLMakie.activate!()
 end
 
+function write_umap_plots(state)
+    od = state["config"].output_directory
+    od = joinpath(od, "umap")
+    if !isdir(od)
+        mkdir(od)
+    end
+
+    # Switch to CairoMakie
+    CairoMakie.activate!()
+    
+
+    # DeltaR2
+    fig = Figure()
+    ax = Axis(fig[1,1],
+        backgroundcolor=:white)
+    umap_plot = scatter!(ax, state["umap_xs"], state["umap_ys"]; 
+        colormap=:viridis,
+        color=Float64.(state["umap_DeltaR2s"][]),
+        colorrange=(0., maximum(filter(!isnan,state["umap_DeltaR2s"][]))), markersize=12)
+    cb = Colorbar(fig[1,2], colorrange=(0., maximum(filter(!isnan,state["umap_DeltaR2s"][]))), 
+        colormap=:viridis, label="ΔR₂ (s⁻¹)")
+
+    # Save the figure
+    filename = joinpath(od, "DeltaR2.pdf")
+    @info "Saving ΔR2 UMAP plot to $filename"
+    Makie.save(filename, fig)
+
+
+    # Reference R2
+    fig = Figure()
+    ax = Axis(fig[1,1],
+        backgroundcolor=:white)
+    umap_plot = scatter!(ax, state["umap_xs"], state["umap_ys"]; 
+        colormap=:viridis,
+        color=Float64.(state["umap_refR2s"][]),
+        colorrange=(0., maximum(filter(!isnan,state["umap_refR2s"][]))), markersize=12)
+    cb = Colorbar(fig[1,2], colorrange=(0., maximum(filter(!isnan,state["umap_refR2s"][]))), 
+        colormap=:viridis, label="ΔR₂ (s⁻¹)")
+
+    # Save the figure
+    filename = joinpath(od, "refR2.pdf")
+    @info "Saving reference R2 UMAP plot to $filename"
+    Makie.save(filename, fig)
+
+
+    # II0
+    fig = Figure()
+    ax = Axis(fig[1,1],
+        backgroundcolor=:white)
+    umap_plot = scatter!(ax, state["umap_xs"], state["umap_ys"]; 
+        colormap=Reverse(:viridis),
+        color=Float64.(state["umap_II0s"][]),
+        colorrange=(0., 1), markersize=12)
+    cb = Colorbar(fig[1,2], colorrange=(0., 1),
+        colormap=Reverse(:viridis), label="Relative intensity")
+
+    # Save the figure
+    filename = joinpath(od, "II0.pdf")
+    @info "Saving I/I₀ UMAP plot to $filename"
+    Makie.save(filename, fig)
+
+
+    # CSPs
+    fig = Figure()
+    ax = Axis(fig[1,1],
+        backgroundcolor=:white)
+    umap_plot = scatter!(ax, state["umap_xs"], state["umap_ys"]; 
+        colormap=:viridis,
+        color=Float64.(state["umap_csps"][]),
+        colorrange=(0., maximum(filter(!isnan,state["umap_csps"][]))), markersize=12)
+    cb = Colorbar(fig[1,2], colorrange=(0., maximum(filter(!isnan,state["umap_csps"][]))), 
+        colormap=:viridis, label="Chemical shift perturbation (ppm)")
+
+    # Save the figure
+    filename = joinpath(od, "csps.pdf")
+    @info "Saving csps UMAP plot to $filename"
+    Makie.save(filename, fig)
+
+
+    # reduced chi2
+    fig = Figure()
+    ax = Axis(fig[1,1],
+        backgroundcolor=:white)
+    umap_plot = scatter!(ax, state["umap_xs"], state["umap_ys"]; 
+        colormap=:viridis,
+        color=Float64.(state["umap_reducedchi2s"][]),
+        colorrange=(0., maximum(filter(!isnan,state["umap_reducedchi2s"][]))), markersize=12)
+    cb = Colorbar(fig[1,2], colorrange=(0., maximum(filter(!isnan,state["umap_reducedchi2s"][]))),
+        colormap=:viridis, label="Reduced χ²")
+
+    # Save the figure
+    filename = joinpath(od, "reducedchi2.pdf")
+    @info "Saving reduced chi2 UMAP plot to $filename"
+    Makie.save(filename, fig)
+
+    # Switch back to GLMakie
+    GLMakie.activate!()
+end
 
 function write_peaks(state)
     for cocktail in state["cocktails"]
