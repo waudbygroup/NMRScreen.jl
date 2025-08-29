@@ -1,7 +1,6 @@
 module Registration
 
 using CairoMakie
-using Distances
 using FileIO
 using GLMakie
 using LinearAlgebra
@@ -10,10 +9,8 @@ using Measurements
 using MolecularGraph
 using NMRTools
 using Peaks
-using RDKitMinimalLib
 using Statistics
 using TOML
-using UMAP
 
 using ..NMRScreen
 using ..Types
@@ -53,7 +50,7 @@ end
 # start registration from state - for returning to the GUI
 function registration(state)
     gui!(state)
-    
+
     # 4. generate updated cocktails from state
     cocktails = recreatecocktails(state)
 

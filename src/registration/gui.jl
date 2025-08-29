@@ -1,5 +1,5 @@
 function gui!(state)
-    fig = Figure(size = (1200, 660))
+    fig = Figure(size=(1200, 660))
     c1 = Makie.wong_colors()[1]
     c2 = Makie.wong_colors()[2]
     c3 = Makie.wong_colors()[3]
@@ -10,19 +10,19 @@ function gui!(state)
 
     # Top panel
     top_panel = fig[1, 1] = GridLayout()
-    button_left = top_panel[1, 1] = Button(fig, label = "<")
-    button_right = top_panel[1, 2] = Button(fig, label = ">")
-    slider_cocktail_label = top_panel[1,3] = Label(fig, "Cocktail\n(Up/Down)")
-    slider_cocktails = top_panel[1,4] = Slider(fig, range = 1:state["n_cocktails"])
+    button_left = top_panel[1, 1] = Button(fig, label="<")
+    button_right = top_panel[1, 2] = Button(fig, label=">")
+    slider_cocktail_label = top_panel[1, 3] = Label(fig, "Cocktail\n(Up/Down)")
+    slider_cocktails = top_panel[1, 4] = Slider(fig, range=1:state["n_cocktails"])
     state["slider_cocktails"] = slider_cocktails
     connect!(state["current_cocktail_number"], slider_cocktails.value)
-    slider_peak_label = top_panel[1,5] = Label(fig, "Peak\n(Left/Right)")
-    slider_peaks = top_panel[1,6] = Slider(fig, range = @lift(1:$(state["n_peaks"])))
+    slider_peak_label = top_panel[1, 5] = Label(fig, "Peak\n(Left/Right)")
+    slider_peaks = top_panel[1, 6] = Slider(fig, range=@lift(1:$(state["n_peaks"])))
     state["slider_peaks"] = slider_peaks
     connect!(state["current_peak_number"], slider_peaks.value)
 
-    cb_label = top_panel[1,7] = Label(fig, "Active\n(SPACE to toggle)")
-    cbgood = Checkbox(top_panel[1, 8], checked = state["current_good"][])
+    cb_label = top_panel[1, 7] = Label(fig, "Active\n(SPACE to toggle)")
+    cbgood = Checkbox(top_panel[1, 8], checked=state["current_good"][])
     # connect!(cbgood.checked, state["current_good"])
     # when current peak or cocktail changes, update checkbox
     on(state["current_peak_number"]) do _
@@ -36,8 +36,8 @@ function gui!(state)
         notify(state["good"])
     end
 
-    info_label = top_panel[1,9] = Label(fig, state["labeltext"])
-    ax_structure = Axis(top_panel[1,10], aspect = DataAspect(), backgroundcolor = :white, height=150,
+    info_label = top_panel[1, 9] = Label(fig, state["labeltext"])
+    ax_structure = Axis(top_panel[1, 10], aspect=DataAspect(), backgroundcolor=:white, height=150,
         xzoomlock=true,
         yzoomlock=true,
         xrectzoom=false,
@@ -47,7 +47,7 @@ function gui!(state)
     hidedecorations!(ax_structure)
     hidespines!(ax_structure)
     image!(ax_structure, state["structure"])
-    button = top_panel[1,11] = Button(fig, label = "Proceed")
+    button = top_panel[1, 11] = Button(fig, label="Proceed")
     on(button.clicks) do _
         state["should_close"][] = true
     end
@@ -63,7 +63,7 @@ function gui!(state)
 
     # Middle panel
     # middle_panel = fig[2, 1] = GridLayout()
-    spectra_plot = Axis(fig[2,1],
+    spectra_plot = Axis(fig[2, 1],
         xreversed=true,
         yzoomlock=true,
         ypanlock=true,
@@ -71,26 +71,26 @@ function gui!(state)
         yrectzoom=false,
         xlabel="Chemical shift (ppm)",
         ylabel="Intensity",
-        )
+    )
     hideydecorations!(spectra_plot)
 
     state["current_color"] = lift(good -> good ? c3 : c6, state["current_good"])
 
     vlines!(spectra_plot, state["library_x"], color=:grey, ymin=0.9, label="Library")
     vlines!(spectra_plot, state["current_library_x"], color=state["current_color"], ymin=0.85, linewidth=3)
-    lines!(spectra_plot, state["reference_plot"], label = "Reference", color=c5)
-    lines!(spectra_plot, state["bound_plot"], label = "Bound", color=c7)
+    lines!(spectra_plot, state["reference_plot"], label="Reference", color=c5)
+    lines!(spectra_plot, state["bound_plot"], label="Bound", color=c7)
     axislegend(spectra_plot)
-    
+
     scatter!(spectra_plot, state["ref_points"], color=c1, markersize=12)
     scatter!(spectra_plot, state["bound_points"], color=c2, markersize=12)
     scatter!(spectra_plot, state["current_points"], markersize=15, color=state["current_color"])
 
 
     # Bottom panel
-    bottom_panel = fig[3,1] = GridLayout()
+    bottom_panel = fig[3, 1] = GridLayout()
 
-    ax_heatmap1 = bottom_panel[1,1] = Axis(fig,
+    ax_heatmap1 = bottom_panel[1, 1] = Axis(fig,
         xlabel="Peak",
         ylabel="Cocktail",
         yreversed=true,
@@ -103,13 +103,13 @@ function gui!(state)
         backgroundcolor=:grey10,
         title="Reference vs library peak positions",
         yticks=(1:state["n_cocktails"], state["cocktail_ids"])
-        )
+    )
     hm1 = heatmap!(ax_heatmap1, state["heatmap_csps1"],
-        colorrange=lift(z->(0, maximum(filter(!isnan, z))), state["heatmap_csps1"]))
-    cb = Colorbar(bottom_panel[1,2], hm1, label="Chemical shift difference (ppm)")
+        colorrange=lift(z -> (0, maximum(filter(!isnan, z))), state["heatmap_csps1"]))
+    cb = Colorbar(bottom_panel[1, 2], hm1, label="Chemical shift difference (ppm)")
     scatter!(ax_heatmap1, state["heatmap_point"], color=c4, marker=:star5, markersize=12)
 
-    ax_heatmap2 = bottom_panel[1,3] = Axis(fig,
+    ax_heatmap2 = bottom_panel[1, 3] = Axis(fig,
         xlabel="Peak",
         ylabel="Cocktail",
         yreversed=true,
@@ -122,11 +122,11 @@ function gui!(state)
         backgroundcolor=:grey10,
         title="Bound vs reference peak positions",
         yticks=(1:state["n_cocktails"], state["cocktail_ids"])
-        )
-        
+    )
+
     hm2 = heatmap!(ax_heatmap2, state["heatmap_csps2"],
-        colorrange=lift(z->(0, maximum(filter(!isnan, z))), state["heatmap_csps2"]))
-    cb = Colorbar(bottom_panel[1,4], hm2, label="Chemical shift difference (ppm)")
+        colorrange=lift(z -> (0, maximum(filter(!isnan, z))), state["heatmap_csps2"]))
+    cb = Colorbar(bottom_panel[1, 4], hm2, label="Chemical shift difference (ppm)")
     scatter!(ax_heatmap2, state["heatmap_point"], color=c4, marker=:star5, markersize=12)
     # Event handler for heatmap click
     on(events(ax_heatmap1).mousebutton) do event
@@ -162,7 +162,7 @@ function gui!(state)
     # on(slider_peaks.value) do n
     on(state["current_ref_x"]) do x
         xl1, xl2 = spectra_plot.xaxis.attributes.limits[]
-        mn,mx = extrema(data(state["reference_spec"][],F1Dim))
+        mn, mx = extrema(data(state["reference_spec"][], F1Dim))
         sw = mx - mn
         xw = xl2 - xl1
         # x = state["ref_points"][][n][1]
@@ -190,7 +190,7 @@ function gui!(state)
     end
     on(state["reference_plot"]) do spec
         # reset y limits
-        mn,mx = extrema([p[2] for p in spec])
+        mn, mx = extrema([p[2] for p in spec])
         ylims!(spectra_plot, (-0.1mx, 1.1mx))
     end
     on(events(fig.scene).keyboardbutton) do event
@@ -206,12 +206,12 @@ function gui!(state)
             elseif event.key == Keyboard.down
                 i = state["current_cocktail_number"][]
                 if i < state["n_cocktails"]
-                    set_close_to!(slider_cocktails, i+1)
+                    set_close_to!(slider_cocktails, i + 1)
                 end
             elseif event.key == Keyboard.up
                 i = state["current_cocktail_number"][]
                 if i > 1
-                    set_close_to!(slider_cocktails, i-1)
+                    set_close_to!(slider_cocktails, i - 1)
                 end
             elseif ispressed(fig, Exclusively(Keyboard.left_bracket))
                 nudge_ref_left!(state)
@@ -261,7 +261,7 @@ function gui!(state)
 
     showhelp()
 
-    display(fig, float = false)
+    display(fig)
     while !state["should_close"][]
         sleep(0.1)
         if !isopen(fig.scene)
@@ -273,7 +273,7 @@ function gui!(state)
     GLMakie.closeall()
 end
 
-    
+
 function showhelp()
     @info """
 # NMR Cocktail Peak Alignment
@@ -347,11 +347,11 @@ function navigate_peaks_within_fragment!(state, direction)
 
     # Find the current index in other_peak_numbers
     current_index = findfirst(==(current_peak_number), other_peak_numbers)
-    
+
     if isnothing(current_index)
         error("Current peak number not found in fragment peaks")
     end
-    
+
     # Calculate the new index based on direction
     if direction == 1
         new_index = current_index % length(other_peak_numbers) + 1
@@ -360,27 +360,27 @@ function navigate_peaks_within_fragment!(state, direction)
     else
         error("Invalid direction: $direction. Must be +/- 1")
     end
-    
+
     # Update the current peak number in the state
     set_close_to!(state["slider_peaks"], other_peak_numbers[new_index])
 end
 
 function find_nearest_peak(spec, current_pos, direction; snr_threshold=3)
     x = data(spec, F1Dim)
-    y = data(spec[:,1]) / spec[:noise]
+    y = data(spec[:, 1]) / spec[:noise]
 
     pks = findmaxima(y)     # detect peaks
     peakheights!(pks; min=snr_threshold) # filter list
 
     peak_shifts = x[pks.indices]
-    
+
     # Find peaks in the specified direction from current position
     if direction > 0
-        candidates = peak_shifts[peak_shifts .< current_pos]
+        candidates = peak_shifts[peak_shifts.<current_pos]
         isempty(candidates) && return current_pos
         return maximum(candidates)
     else
-        candidates = peak_shifts[peak_shifts .> current_pos]
+        candidates = peak_shifts[peak_shifts.>current_pos]
         isempty(candidates) && return current_pos
         return minimum(candidates)
     end
