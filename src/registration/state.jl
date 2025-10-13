@@ -5,9 +5,9 @@ function initialisestate(config, library, regcocktails)
     state["cocktails"] = regcocktails
 
     state["n_cocktails"] = length(regcocktails)
-    state["cocktail_ids"] = [ regcocktail.id for regcocktail in regcocktails ]
+    state["cocktail_ids"] = [regcocktail.id for regcocktail in regcocktails]
     state["current_cocktail_number"] = Observable(1)
-    state["current_cocktail"] = lift(i->state["cocktails"][i], state["current_cocktail_number"])
+    state["current_cocktail"] = lift(i -> state["cocktails"][i], state["current_cocktail_number"])
 
     state["max_peaks"] = maximum([length(cocktail.peak_ids) for cocktail in regcocktails])
     state["n_peaks"] = lift(i -> length(i.peak_ids), state["current_cocktail"])
@@ -33,10 +33,10 @@ function initialisestate(config, library, regcocktails)
 
     # peak heights for current cocktail
     state["ref_y"] = lift(state["ref_x"], state["reference_spec"]) do xs, spec
-        [spec[Near(x)]/scale(spec) for x in xs]
+        [spec[Near(x), 1] / scale(spec) for x in xs]
     end
     state["bound_y"] = lift(state["bound_x"], state["bound_spec"]) do xs, spec
-        [spec[Near(x)]/scale(spec) for x in xs]
+        [spec[Near(x), 1] / scale(spec) for x in xs]
     end
     # peak position/heights for current peak
     state["current_library_x"] = lift((c, i) -> c[i], state["library_x"], state["current_peak_number"])
@@ -57,16 +57,16 @@ function initialisestate(config, library, regcocktails)
     state["current_points"] = lift(state["ref_points"], state["bound_points"], state["current_peak_number"]) do ref, bound, i
         [ref[i], bound[i]]
     end
-    
+
     # plotting data
     state["reference_plot"] = lift(state["reference_spec"]) do spec
         x = data(spec, F1Dim)
-        y = data(spec[:,1]) / scale(spec)
+        y = data(spec[:, 1]) / scale(spec)
         [Point2f(p...) for p in zip(x, y)]
     end
     state["bound_plot"] = lift(state["bound_spec"]) do spec
         x = data(spec, F1Dim)
-        y = data(spec[:,1]) / scale(spec)
+        y = data(spec[:, 1]) / scale(spec)
         [Point2f(p...) for p in zip(x, y)]
     end
 
